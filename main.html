@@ -2152,9 +2152,7 @@
             try {
                 const text = btn.parentElement.querySelector('.assistant-text').textContent;
                 navigator.clipboard.writeText(text);
-                const absPath = 'C:/Program Files (x86)/Jarvis/notification_sound.mp3';
-                const urlPath = 'file:///' + absPath.replace(/\\/g, '/');
-                playSoundEffect(urlPath);
+                playSoundEffect('file:///C:/Program Files (x86)/Jarvis/notification_sound.mp3');
                 btn.textContent = "✔";
                 setTimeout(() => btn.textContent = "📋", 1000);
             } catch (error) {
@@ -2827,9 +2825,7 @@
         function playToggleSound() {
             // Воспроизводим звук при переключении toggle
             if (userSettings && userSettings.sound_enabled) {
-                const absPath = 'C:/Program Files (x86)/Jarvis/toggle_sound.mp3';
-                const urlPath = 'file:///' + absPath.replace(/\\/g, '/');
-                playSoundEffect(urlPath);
+                playSoundEffect('file:///C:/Program Files (x86)/Jarvis/toggle_sound.mp3');
             }
         }
         function playLoginSuccessSound() { 
@@ -2840,9 +2836,8 @@
                     const user = JSON.parse(userData); 
                     
                     if (user && user.login) { 
-                        try {
-
-                            const absPath = 'C:/Program Files (x86)/Jarvis/login_success.mp3';
+                        try { 
+                            const absPath = 'file:///C:/Program Files (x86)/Jarvis/login_success.mp3';
                             const urlPath = 'file:///' + absPath.replace(/\\/g, '/');
                             let soundPath = urlPath; 
                             const audio = new Audio(soundPath);
