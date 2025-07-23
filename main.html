@@ -1440,12 +1440,12 @@
             try {
                 const alwaysListenToggle = document.getElementById('alwaysListenToggleSettings');
                 const soundToggle = document.getElementById('soundToggleSettings');
-                const autostartToggle = document.getElementById('autostartToggleSettings');
-                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
+                const autostartToggle = document.getElementById('autostartToggleSettings'); 
+                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings'); 
                 if (alwaysListenToggle) alwaysListenToggle.classList.toggle('active', !!settings.voice_enabled);
                 if (soundToggle) soundToggle.classList.toggle('active', !!settings.sound_enabled);
                 if (autostartToggle) autostartToggle.classList.toggle('active', !!settings.autostart_enabled);
-                if (triggerOnlyToggleSettings) triggerOnlyToggleSettings.classList.toggle('active', !!settings.voice_trigger_only);
+                if (triggerOnlyToggleSettings) triggerOnlyToggleSettings.classList.toggle('active', !!settings.trigger_only);
             } catch (error) { ensureContentVisible(); }
         }
         
@@ -1669,14 +1669,12 @@
                 const voiceName = document.getElementById('voiceName');
                 const voiceNameSettings = document.getElementById('voiceNameSettings');
                 const speechSpeedSliderSettings = document.getElementById('speechSpeedSliderSettings');
-                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
-                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
+                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings'); 
                 if (aiModel) userSettings.ai_model = aiModel.value; 
                 if (voiceName) userSettings.voice_name = voiceName.value;
                 if (voiceNameSettings) userSettings.voice_name = voiceNameSettings.value;
                 if (speechSpeedSliderSettings) userSettings.speech_speed = parseFloat(speechSpeedSliderSettings.value);
-                if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value;
-                if (triggerOnlyToggleSettings) userSettings.voice_trigger_only = !!triggerOnlyToggleSettings.checked;
+                if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value; 
             } catch (error) {
                 console.error('Ошибка в updateSettings:', error);
                 ensureContentVisible();
@@ -1971,6 +1969,7 @@
                 const autostartToggleSettings = document.getElementById('autostartToggleSettings');
                 const speakCodeToggleSettings = document.getElementById('speakCodeToggleSettings');
                 const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
+                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
                 
                 if (settings.ai_model && aiModelSettings) aiModelSettings.value = settings.ai_model;
                 if (settings.voice_name && voiceNameSettings) voiceNameSettings.value = settings.voice_name;
@@ -1979,8 +1978,7 @@
                     if (speechSpeedValueSettings) speechSpeedValueSettings.textContent = settings.speech_speed + 'x';
                 }
                 if (settings.daily_reminder_text && dailyReminderTextSettings) dailyReminderTextSettings.value = settings.daily_reminder_text;
-                
-                // Применяем состояния переключателей
+                 
                 if (alwaysListenToggleSettings) {
                     if (settings.voice_enabled) {
                         alwaysListenToggleSettings.classList.add('active');
@@ -1988,7 +1986,13 @@
                         alwaysListenToggleSettings.classList.remove('active');
                     }
                 }
-                
+                if(triggerOnlyToggleSettings){
+                    if(settings.trigger_only){
+                        triggerOnlyToggleSettings.classList.add('active');
+                    }else{
+                        triggerOnlyToggleSettings.classList.remove('active');
+                    }
+                }
                 if (soundToggleSettings) {
                     if (settings.sound_enabled) {
                         soundToggleSettings.classList.add('active');
