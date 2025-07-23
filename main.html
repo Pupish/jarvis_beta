@@ -2152,7 +2152,7 @@
             try {
                 const text = btn.parentElement.querySelector('.assistant-text').textContent;
                 navigator.clipboard.writeText(text);
-                playSoundEffect('C:\\Program Files (x86)\\Jarvis\\notification_sound.mp3');
+                playSoundEffect('C:\Program Files (x86)\Jarvis\notification_sound.mp3');
                 btn.textContent = "✔";
                 setTimeout(() => btn.textContent = "📋", 1000);
             } catch (error) {
@@ -2825,7 +2825,7 @@
         function playToggleSound() {
             // Воспроизводим звук при переключении toggle
             if (userSettings && userSettings.sound_enabled) {
-                playSoundEffect('C:\\Program Files (x86)\\Jarvis\\toggle_sound.mp3');
+                playSoundEffect('C:\Program Files (x86)\Jarvis\toggle_sound.mp3');
             }
         }
         function playLoginSuccessSound() { 
