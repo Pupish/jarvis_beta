@@ -1,18 +1,5 @@
 {
-  "quick_commands": [
-    {
-      "name": "123",
-      "action": "123123"
-    },
-    {
-      "name": "123123",
-      "action": "123123"
-    },
-    {
-      "name": "333",
-      "action": "333"
-    }
-  ],
+  "quick_commands": [],
   "voice_enabled": true,
   "sound_enabled": true,
   "autostart_enabled": true,
@@ -23,16 +10,7 @@
   "weather_api_key": "",
   "tts_enabled": true,
   "speech_speed": 1,
-  "user_apps": [
-    {
-      "name": "музыка",
-      "path": "C:\\Users\\skjmdfgmj\\AppData\\Local\\Programs\\YandexMusic\\Яндекс Музыка.exe"
-    },
-    {
-      "name": "123123",
-      "path": "123123213"
-    }
-  ],
-  "voice_trigger_only": true,
+  "user_apps": [],
+  "voice_trigger_only": false,
   "speak_code": false
 }
