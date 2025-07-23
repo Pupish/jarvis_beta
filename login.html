@@ -552,7 +552,7 @@
                         }
                          
                         setTimeout(() => {
-                            window.location.href = 'main.html';
+                            window.pywebview.api.load_main_window();
                         }, 1500);
                     } else { 
                         loginBtn.textContent = '❌ Ошибка входа: ' + result.message;
@@ -577,13 +577,6 @@
                 }, 2000);
             }
         }); 
-        document.addEventListener('DOMContentLoaded', function() { 
-            const userData = localStorage.getItem('jarvis_user');
-            if (!userData) { 
-                 setTimeout(() => {
-                 }, 1000);
-            }
-        });
     </script>
 </body>
 </html> 

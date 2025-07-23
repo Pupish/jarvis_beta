@@ -1401,10 +1401,7 @@
             contentLoaded = true;
             ensureContentVisible();
             
-            // Воспроизводим звук успешного входа после загрузки
-            setTimeout(() => { 
-                playLoginSuccessSound();;
-            }, 100);
+          
             
          
             
@@ -1444,11 +1441,11 @@
                 const alwaysListenToggle = document.getElementById('alwaysListenToggleSettings');
                 const soundToggle = document.getElementById('soundToggleSettings');
                 const autostartToggle = document.getElementById('autostartToggleSettings');
-                const triggerOnlyCheckbox = document.getElementById('triggerOnlyCheckbox');
+                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
                 if (alwaysListenToggle) alwaysListenToggle.classList.toggle('active', !!settings.voice_enabled);
                 if (soundToggle) soundToggle.classList.toggle('active', !!settings.sound_enabled);
                 if (autostartToggle) autostartToggle.classList.toggle('active', !!settings.autostart_enabled);
-                if (triggerOnlyCheckbox) triggerOnlyCheckbox.checked = !!settings.voice_trigger_only;
+                if (triggerOnlyToggleSettings) triggerOnlyToggleSettings.classList.toggle('active', !!settings.voice_trigger_only);
             } catch (error) { ensureContentVisible(); }
         }
         
@@ -1673,13 +1670,13 @@
                 const voiceNameSettings = document.getElementById('voiceNameSettings');
                 const speechSpeedSliderSettings = document.getElementById('speechSpeedSliderSettings');
                 const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
-                const triggerOnlyCheckbox = document.getElementById('triggerOnlyCheckbox');
+                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
                 if (aiModel) userSettings.ai_model = aiModel.value; 
                 if (voiceName) userSettings.voice_name = voiceName.value;
                 if (voiceNameSettings) userSettings.voice_name = voiceNameSettings.value;
                 if (speechSpeedSliderSettings) userSettings.speech_speed = parseFloat(speechSpeedSliderSettings.value);
                 if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value;
-                if (triggerOnlyCheckbox) userSettings.voice_trigger_only = !!triggerOnlyCheckbox.checked;
+                if (triggerOnlyToggleSettings) userSettings.voice_trigger_only = !!triggerOnlyToggleSettings.checked;
             } catch (error) {
                 console.error('Ошибка в updateSettings:', error);
                 ensureContentVisible();
@@ -2152,12 +2149,11 @@
             try {
                 const text = btn.parentElement.querySelector('.assistant-text').textContent;
                 navigator.clipboard.writeText(text);
-                playSoundEffect('file:///C:/Program Files (x86)/Jarvis/notification_sound.mp3');
+                playSoundEffect('C:\\Jarvis\\notification_sound.mp3');
                 btn.textContent = "✔";
                 setTimeout(() => btn.textContent = "📋", 1000);
             } catch (error) {
                 console.error('Ошибка в copyToClipboard:', error);
-                // Не вызываем ensureContentVisible здесь, так как это не критично
             }
         }
 
@@ -2822,55 +2818,10 @@
             }
         }
 
-        function playToggleSound() {
-            // Воспроизводим звук при переключении toggle
+        function playToggleSound() { 
             if (userSettings && userSettings.sound_enabled) {
-                playSoundEffect('file:///C:/Program Files (x86)/Jarvis/toggle_sound.mp3');
+                window.pywebview.api.play_toggle_sound_();
             }
-        }
-        function playLoginSuccessSound() { 
-            const userData = localStorage.getItem('jarvis_user'); 
-            
-            if (userData) {
-                try {
-                    const user = JSON.parse(userData); 
-                    
-                    if (user && user.login) { 
-                        try { 
-                            const absPath = 'file:///C:/Program Files (x86)/Jarvis/login_success.mp3';
-                            const urlPath = 'file:///' + absPath.replace(/\\/g, '/');
-                            let soundPath = urlPath; 
-                            const audio = new Audio(soundPath);
-                            audio.volume = 0.5;
-                            audio.preload = 'auto';
-                            
-                            audio.onloadstart = () => {  
-                            };
-                            audio.oncanplay = () => {  
-                            };
-                            audio.onerror = (error) => {  
-                            };
-                            
-                            audio.onended = () => {  
-                            };
-                             
-                            audio.play().catch(error => {  
-                            });
-                        
-                        } catch (error) { 
-                        }
-                        login_sound_is_played = true;
-                    } else { 
-                    }
-                } catch (error) { 
-                }
-            } else { 
-            } 
-        }
-
-        function resetLoginSoundFlag() {
-            // Сбрасываем флаг для возможности воспроизведения звука при следующем входе
-            login_sound_is_played = false;
         }
     </script>
 </body>
