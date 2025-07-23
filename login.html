@@ -552,7 +552,7 @@
                         }
                          
                         setTimeout(() => {
-                            window.location.href = 'C:\\Program Files (x86)\\Jarvis\\main.html';
+                            window.location.href = 'main.html';
                         }, 1500);
                     } else { 
                         loginBtn.textContent = '❌ Ошибка входа: ' + result.message;
@@ -577,6 +577,13 @@
                 }, 2000);
             }
         }); 
+        document.addEventListener('DOMContentLoaded', function() { 
+            const userData = localStorage.getItem('jarvis_user');
+            if (!userData) { 
+                 setTimeout(() => {
+                 }, 1000);
+            }
+        });
     </script>
 </body>
 </html> 
