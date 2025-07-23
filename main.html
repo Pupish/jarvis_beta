@@ -1,0 +1,2875 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARVIS MAX - Vibe Technology</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Montserrat:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #fff;
+            --secondary-color: #000000;
+            --accent-color: #ffffff;
+            --success-color: #000000;
+            --warning-color: #ffffff;
+            --error-color: #ffffff;
+            --background-primary: rgba(28, 28, 30, 0.8);
+            --background-secondary: rgba(44, 44, 46, 0.6);
+            --background-tertiary: rgba(58, 58, 60, 0.4);
+            --text-primary: #FFFFFF;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-tertiary: rgba(255, 255, 255, 0.6);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-blur: blur(20px);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 16px 64px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            border-radius: 0 !important;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #ffffff 100%) !important;
+            overflow: hidden;
+            color: var(--text-primary) !important;
+        }
+
+        /* Particle.js контейнер */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        /* Улучшенные скругления и стекло */
+        .main-layout {
+            position: relative;
+            z-index: 60;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.2s ease-out 0.5s forwards;
+            border-radius: 0px;
+            box-shadow: none;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes scaleIn {
+            to {
+                transform: scale(1);
+            }
+        }
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Сайдбар */
+        .sidebar {
+            width: 340px;
+            background: var(--background-primary);
+            border-right: var(--glass-border);
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            overflow-y: auto;
+            transform: none;
+            border-radius: 0px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-header {
+            padding: 32px 24px 24px 24px;
+            border-bottom: var(--glass-border);
+            margin-bottom: 0;
+            background: var(--background-primary);
+            border-radius: 0px 0 0 0;
+        }
+
+        .vibe-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .vibe-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .sidebar-title {
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .sidebar-section {
+            padding: 24px;
+            margin-bottom: 0;
+            border-bottom: var(--glass-border);
+            opacity: 1;
+            transform: translateY(0);
+            border-radius: 16px;
+            background: var(--background-primary);
+        }
+
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .control-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: var(--background-secondary);
+            border-radius: 12px;
+            border: var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: var(--glass-blur);
+            box-shadow: var(--shadow-light);
+        }
+
+        .control-item:hover {
+            background: var(--background-tertiary);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .control-label {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .toggle {
+            width: 48px;
+            height: 28px;
+            background: #e0e0e0;
+            border: none;
+            position: relative;
+            display: inline-block;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: background 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s;
+        }
+        .toggle.active {
+            background: linear-gradient(90deg, #4f8cff 60%, #00e0ff 100%);
+            box-shadow: 0 4px 16px 0 rgba(79,140,255,0.18);
+        }
+        .toggle-knob {
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            position: absolute;
+            left: 2px;
+            top: 2px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            transition: left 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s, background 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toggle.active .toggle-knob {
+            left: 22px;
+            background: #fff;
+            box-shadow: 0 0 0 6px rgba(79,140,255,0.10);
+        }
+        .toggle:active .toggle-knob {
+            box-shadow: 0 0 0 8px rgba(79,140,255,0.13);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .slider {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--background-tertiary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+            box-shadow: var(--shadow-light);
+            transition: all 0.2s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(0, 122, 255, 0.6);
+        }
+
+        .slider-value {
+            color: var(--text-primary);
+            min-width: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .quick-commands {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 16px;
+            background: var(--background-secondary);
+            border-radius: 12px;
+            border: var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .quick-command {
+            background: #fff !important;
+            color: #111 !important;
+            border: none !important;
+            padding: 12px 20px;
+            margin: 6px 0;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 0 !important;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: none !important;
+        }
+        .quick-command:hover {
+            background: #eee !important;
+            color: #000 !important;
+            transform: none !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+
+        .quick-command:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 12px 0 rgba(255,45,146,0.3);
+        }
+
+        /* Настройки в сайдбаре */
+        .settings-item {
+            margin-bottom: 16px;
+        }
+
+        .settings-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .settings-input, .settings-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: var(--glass-border);
+            border-radius: 10px;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .settings-input:focus, .settings-select:focus {
+            border-color: var(--primary-color);
+            background: var(--background-tertiary);
+            box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);
+        }
+
+        .save-settings-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 18px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .save-settings-btn:hover {
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-color));
+            transform: translateY(-2px);
+        }
+
+        /* Основная область чата */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--background-primary) !important;
+            backdrop-filter: var(--glass-blur);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.2s ease-out 0.7s forwards;
+            z-index: 60;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-header {
+            padding: 32px 40px 24px 40px;
+            border-bottom: var(--glass-border);
+            background: var(--background-secondary) !important;
+        }
+
+        .chat-title {
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .chat-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 32px 40px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .message {
+            display: flex;
+            margin: 15px 0;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .message.user {
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message.assistant {
+            justify-content: flex-start;
+        }
+        
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+        
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .message.assistant .message-avatar {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            position: relative;
+        }
+        
+        .message.user .message-content {
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            padding: 12px 16px;
+            border-radius: 18px 18px 4px 18px;
+            border: var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            box-shadow: var(--glass-shadow);
+            margin-left: auto;
+        }
+        
+        .message.assistant .message-content {
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            padding: 12px 16px;
+            border-radius: 18px 18px 18px 4px;
+            border: var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+            box-shadow: var(--glass-shadow);
+            position: relative;
+        }
+        
+        .message.assistant .message-text,
+        .message.assistant .message-text * {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .message.assistant .message-text ::selection,
+        .message.assistant .message-text code::selection,
+        .message.assistant .message-text pre::selection,
+        .message.assistant .message-text *::selection {
+            background: transparent !important;
+            color: inherit !important;
+        }
+        
+        .message.assistant .message-text h3 {
+            color: var(--text-primary);
+            margin: 15px 0 10px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .message.assistant .message-text h4 {
+            color: var(--text-primary);
+            margin: 12px 0 8px 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .message.assistant .message-text h5 {
+            color: var(--text-primary);
+            margin: 10px 0 6px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .message.assistant .message-text p {
+            margin: 8px 0;
+            color: var(--text-primary);
+        }
+        
+        .message.assistant .message-text strong {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .message.assistant .message-text em {
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+        
+        .message.assistant .message-text code {
+            background: none !important;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--text-primary);
+        }
+        .message.assistant .message-text pre {
+            background: none !important;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .message.assistant .message-text pre code {
+            background: none !important;
+            padding: 0;
+            color: var(--text-primary);
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .message.assistant .message-text ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .message.assistant .message-text li {
+            margin: 5px 0;
+            color: var(--text-primary);
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: -20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 12px;
+            transition: all 0.3s ease;
+            opacity: 0;
+        }
+        
+        .message.assistant:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .generating-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+        }
+        
+        .generating-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .generating-dots span {
+            width: 4px;
+            height: 4px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            animation: dotPulse 1.5s infinite;
+        }
+        
+        .generating-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .generating-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes dotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .chat-input-area {
+            padding: 24px 40px 32px 40px;
+            background: var(--background-secondary) !important;
+            border-top: var(--glass-border);
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 16px;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 16px 24px;
+            border: var(--glass-border);
+            border-radius: 0 !important;
+            background: var(--background-tertiary) !important;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            resize: none;
+            min-height: 24px;
+            max-height: 120px;
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            background: var(--background-secondary) !important;
+            box-shadow: none;
+        }
+
+        .chat-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .send-button, .mic-button {
+            background: #fff !important;
+            color: #111 !important;
+            border: none;
+            border-radius: 0 !important;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 1.2rem;
+            box-shadow: none !important;
+        }
+
+        .send-button:hover, .mic-button:hover {
+            background: #eee !important;
+            color: #000 !important;
+            transform: translateY(-2px);
+        }
+
+        .mic-button.active {
+            background: #fff !important;
+            color: #FF3B30 !important;
+            animation: none;
+        }
+
+        /* Статус подключения */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: var(--background-secondary);
+            border-radius: 12px;
+            border: var(--glass-border);
+            backdrop-filter: var(--glass-blur);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: blink 2s infinite;
+            box-shadow: 0 0 10px rgba(52, 199, 89, 0.5);
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; transform: scale(1); }
+            51%, 100% { opacity: 0.7; transform: scale(0.8); }
+        }
+
+        .status-text {
+            color: var(--success-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Скроллбар */
+        .chat-messages::-webkit-scrollbar,
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track,
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--background-tertiary);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb,
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover,
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Анимации для новых сообщений */
+        .message.new {
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        /* Чат и карточки */
+        .chat-container, .card, .input-area, .message-bubble {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 50vh;
+            }
+            
+            .chat-area {
+                flex: 1;
+            }
+        }
+
+        .demo-banner {
+            background: linear-gradient(90deg, var(--accent-color), var(--warning-color), var(--success-color));
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            padding: 16px 0;
+            border-radius: 0 0 18px 18px;
+            margin-bottom: 0;
+            box-shadow: 0 4px 24px 0 rgba(255,45,146,0.15);
+            letter-spacing: 1px;
+            animation: demoBannerIn 1.2s cubic-bezier(.23,1.12,.72,1.01);
+            z-index: 10;
+        }
+        .demo-banner-sidebar {
+            border-radius: 0 0 18px 18px;
+            margin-bottom: 0;
+        }
+        .demo-banner-chat {
+            border-radius: 0 0 18px 18px;
+            margin-bottom: 0;
+        }
+        @keyframes demoBannerIn {
+            0% { opacity: 0; transform: translateY(-30px) scale(0.95); }
+            80% { opacity: 1; transform: translateY(5px) scale(1.05); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .sidebar-settings-btn {
+            width: 100%;
+            background: var(--background-secondary) !important;
+            color: var(--text-primary);
+            border: var(--glass-border);
+            border-radius: 18px;
+            padding: 14px 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 18px 0 0 0;
+            cursor: pointer;
+            box-shadow: var(--shadow-light);
+            transition: background 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s;
+            opacity: 0.92;
+            backdrop-filter: var(--glass-blur);
+        }
+        .sidebar-settings-btn:hover {
+            background: var(--background-tertiary) !important;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 24px 0 rgba(255,45,146,0.10);
+            opacity: 1;
+        }
+        .settings-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 380px;
+            height: 100vh;
+            background: var(--background-primary) !important;
+            border-radius: 0 !important;
+            z-index: 1000;
+            transform: translateX(-110%);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s;
+            display: none;
+            flex-direction: column;
+        }
+        .settings-sidebar.open {
+            transform: translateX(0);
+            opacity: 1;
+            display: flex;
+        }
+        .settings-sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 32px 24px 24px 24px;
+            border-bottom: var(--glass-border);
+            background: var(--background-secondary) !important;
+            border-radius: 0 !important;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary) !important;
+        }
+        .close-settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-settings-btn:hover {
+            color: var(--accent-color);
+        }
+        .settings-sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+        .mic-test-result {
+            margin-top: 8px;
+            color: var(--success-color);
+            font-size: 0.95rem;
+        }
+        .animated.fadeInUp {
+            animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1);
+        }
+        /* Системная статистика возле чата */
+        .system-stats {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: flex-end;
+            margin: 18px 40px 0 0;
+            font-size: 1.08rem;
+            color: var(--text-secondary);
+            background: var(--background-secondary);
+            border-radius: 24px;
+            padding: 10px 24px;
+            box-shadow: var(--shadow-light);
+            z-index: 10;
+        }
+        .stat-item span:first-child {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-right: 6px;
+        }
+        .window-controls {
+            position: absolute;
+            top: 12px;
+            right: 24px;
+            display: flex;
+            gap: 8px;
+            z-index: 20;
+        }
+        .window-controls button {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .window-controls button:hover {
+            background: var(--primary-color);
+            color: #fff;
+            transform: scale(1.1);
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            margin-left: 8px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        .copy-btn:hover {
+            opacity: 1;
+            color: var(--accent-color);
+            transform: scale(1.1);
+        }
+        .settings-section, .settings-card, .chat-area, .sidebar-section {
+            animation: fadeInUp 0.7s;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: none; }
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: var(--background-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 0 !important;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+        /* Исправление: при открытой settings-sidebar скрывать system-stats */
+        .settings-sidebar.open ~ .chat-area #system-stats {
+            display: none !important;
+        }
+        /* Альтернатива: переместить system-stats ниже, если шторка открыта */
+        @media (min-width: 900px) {
+            .settings-sidebar.open ~ .chat-area {
+                margin-top: 60px;
+            }
+        }
+
+        .quick-section-row {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          margin-bottom: 8px;
+        }
+        .quick-section-row input {
+          flex: 1;
+          padding-left: 10px;
+          background: none;
+        }
+        .quick-card {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: var(--background-secondary);
+          border-radius: 10px;
+          padding: 10px 16px;
+          margin-bottom: 8px;
+          box-shadow: var(--shadow-light);
+          transition: box-shadow 0.2s, background 0.2s;
+          min-width: 0; /* Для обрезки текста */
+        }
+        .quick-title, .quick-action {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+        }
+        .quick-title {
+          max-width: 90px; /* Можно увеличить при необходимости */
+        }
+        .quick-action {
+          margin-right: 18px; /* Для приложений можно увеличить */
+        }
+        .quick-btns {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+        }
+        .quick-card:hover {
+          background: var(--background-tertiary);
+          box-shadow: var(--shadow-medium);
+        }
+        .quick-card .quick-title {
+          font-weight: 600;
+          font-size: 1.05em;
+          margin-right: 12px;
+        }
+        .quick-card .quick-action {
+          color: var(--text-secondary);
+          font-size: 0.98em;
+          margin-right: 18px;
+        }
+        .quick-card .quick-btns button {
+          margin-left: 6px;
+          font-size: 1.1em;
+          border-radius: 6px !important;
+          padding: 6px 12px;
+        }
+        .quick-empty {
+          color: var(--text-secondary);
+          font-size: 0.97em;
+          margin: 8px 0 0 0;
+          text-align: center;
+        }
+
+
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        .message.assistant .message-text pre, 
+        .message.assistant .message-text pre code {
+            background: #2f3136 !important;
+            color: #dcddde !important;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            border-radius: 4px;
+            padding: 12px;
+            margin: 8px 0;
+            overflow-x: auto;
+            line-height: 1.4;
+            border: none;
+            display: block;
+        }
+        .message.assistant .message-text code {
+            background: #2f3136 !important;
+            color: #dcddde !important;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            border-radius: 3px;
+            padding: 2px 4px;
+            display: inline;
+        }
+        .message.assistant .message-text {
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <!-- Глобальный фон для гифки -->
+    <div id="global-bg" style="position:fixed;z-index:0;top:0;left:0;width:100vw;height:100vh;pointer-events:none;"></div>
+    <!-- Контейнер для партиклов на заднем фоне -->
+    <div id="particles-bg" style="position:fixed; z-index:0; top:0; left:0; width:100vw; height:100vh; pointer-events:none; filter:blur(2.5px);"></div>
+    <!-- Контейнер для основных партиклов -->
+    <div id="particles-main" style="position:fixed; z-index:0; top:0; left:0; width:100vw; height:100vh; pointer-events:none;"></div>
+    <!-- Основной контент поверх -->
+    <div class="main-layout" style="position:relative; z-index:1;">
+        <!-- Сайдбар -->
+        <div class="sidebar">
+            <!-- Добавить надпись "Настройки" над иконкой -->
+            <div style="text-align:center; font-weight:600; font-size:1.1rem; color:var(--text-primary); margin-top:10px;">Настройки</div>
+            
+            <button class="sidebar-settings-btn" id="openSettingsBtn" onclick="openSettingsSidebar()">⚙️ Настройки</button>
+            <!-- Демо-режим плашка -->
+            <div class="demo-banner demo-banner-sidebar" style="display: none;">Демо-режим. Можно отключить одной командой после оплаты 🚀</div>
+
+            <!-- Надпись "Быстрые действия" -->
+            <div style="font-weight:600; font-size:1.1rem; color:var(--text-primary); margin: 20px 0 10px 16px;">Быстрые действия</div>
+            <!-- Быстрые команды -->
+            <div class="sidebar-section quick-commands">
+                <button class="quick-command" onclick="sendCommand('открой калькулятор')">🧮 Калькулятор</button>
+                <button class="quick-command" onclick="sendCommand('открой проводник')">📁 Проводник</button>
+                <button class="quick-command" onclick="sendCommand('открой командную строку')">💻 Командная строка</button>
+                <button class="quick-command" onclick="sendCommand('погода')">🌤️ Погода</button>
+                <button class="quick-command" onclick="sendCommand('открой блокнот')">📝 Блокнот</button>
+                <button class="quick-command" onclick="sendCommand('очисти корзину')">🗑️ Корзина</button>
+                <button class="quick-command" onclick="sendCommand('режим сна')">😴 Сон</button>
+            </div>
+        </div>
+
+        <!-- Основная область чата -->
+        <div class="chat-area">
+            <!-- Демо-режим плашка -->
+            <div class="demo-banner demo-banner-chat" style="display: none;">Демо-режим. Можно отключить одной командой после оплаты 🚀</div>
+            <div class="chat-header">
+                <div class="chat-title">Vibe AI Assistant</div>
+                <div class="chat-subtitle">Готов к взаимодействию и обработке запросов</div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message assistant new">
+                    <div class="message-avatar">V</div>
+                    <div class="message-content">
+                        Привет! Я JARVIS MAX от Vibe Technology. Ваш персональный AI-ассистент готов помочь вам с любыми задачами. Чем могу быть полезен сегодня?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <div class="chat-input-container">
+                    <textarea 
+                        id="chatInput" 
+                        class="chat-input" 
+                        placeholder="Введите сообщение или используйте голосовой ввод..."
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                    ></textarea>
+                    <div class="chat-buttons">
+                        <button id="micButton" class="mic-button" title="Голосовой ввод" onclick="toggleVoiceInput()">
+                            <span id="micIcon">🎤</span>
+                        </button>
+                        <button id="sendButton" class="send-button" title="Отправить" onclick="sendChatMessage()">
+                            ➤
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="settingsSidebar" class="settings-sidebar">
+            <div class="settings-sidebar-header">
+                <span>Настройки</span>
+                <button class="close-settings-btn" onclick="closeSettingsSidebar()" style="font-size:1.5rem; background:none; border:none; cursor:pointer;">←</button>
+            </div>
+            <div class="settings-sidebar-content">
+                <!-- Аудио -->
+                <div class="settings-section animated fadeInUp">
+                    <div class="section-title">Аудио</div>
+                    <div class="control-item">
+                        <div class="control-label">Системная громкость</div>
+                        <div class="slider-container">
+                            <input class="slider" type="range" min="0" max="100" value="80" id="volumeSliderSettings" onchange="updateVolumeSettings(this.value)" />
+                            <div class="slider-value" id="volumeValueSettings">80%</div>
+                        </div>
+                    </div>
+                    <div class="control-item">
+                        <div class="control-label">Микрофон</div>
+                        <select class="settings-select" id="microphoneSelectSettings" onchange="updateMicrophoneSettings()"></select>
+                        <button class="quick-command" onclick="testMicrophoneSettings()">Тест</button>
+                        <div id="micTestResult" class="mic-test-result"></div>
+                    </div>
+                </div>
+                <!-- Системные -->
+                <div class="settings-section animated fadeInUp">
+                    <div class="section-title">Системные</div>
+                    <div class="control-item">
+                        <div class="control-label">Постоянное прослушивание</div> 
+                        <div class="toggle" id="alwaysListenToggleSettings" onclick="toggleAlwaysListenSettings()"><div class="toggle-knob"></div></div> 
+                    </div>
+                    <div class="control-item">
+                        <div class="control-label">Только с триггером Джарвис</div>
+                        <div class="toggle" id="triggerOnlyToggleSettings" onclick="toggleTriggerOnlySetting()"><div class="toggle-knob"></div></div>
+                    </div>
+                    <div class="control-item">
+                        <div class="control-label">Звуковые эффекты</div>
+                        <div class="toggle" id="soundToggleSettings" onclick="toggleSoundSettings()"><div class="toggle-knob"></div></div>
+                    </div>
+                    <div class="control-item">
+                        <div class="control-label">Автозапуск системы</div>
+                        <div class="toggle" id="autostartToggleSettings" onclick="toggleAutostartSettings()"><div class="toggle-knob"></div></div>
+                    </div>
+                </div> 
+                 
+                <!-- AI -->
+                <div class="settings-section animated fadeInUp">
+                    <div class="section-title">AI</div>
+                    <div class="settings-item">
+                        <div class="settings-label">Модель искусственного интеллекта</div>
+                        <select class="settings-select" id="aiModelSettings">
+                            <option value="google/gemma-3-12b-it:free">Google Gemma 3 (12B) - Free</option>
+                            <option value="openai/gpt-4">OpenAI GPT-4</option>
+                            <option value="openai/gpt-3.5-turbo">OpenAI GPT-3.5 Turbo</option>
+                            <option value="anthropic/claude-3">Anthropic Claude 3</option>
+                        </select>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Голосовой интерфейс</div>
+                        <select class="settings-select" id="voiceNameSettings">
+                            <option value="ru-RU-SvetlanaNeural">Светлана (женский)</option>
+                            <option value="ru-RU-DmitryNeural">Дмитрий (мужской)</option>
+                            <option value="en-US-JennyNeural">Jenny (английский)</option>
+                        </select>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">Скорость речи</div>
+                        <div class="slider-container">
+                            <input class="slider" type="range" min="0.5" max="2.0" step="0.1" value="1.0" id="speechSpeedSliderSettings" onchange="updateSpeechSpeedSettings(this.value)" />
+                            <div class="slider-value" id="speechSpeedValueSettings">1.0x</div>
+                        </div>
+                    </div>
+                    <div class="control-item">
+                        <div class="control-label">Озвучивать код и команды</div>
+                        <div class="toggle" id="speakCodeToggleSettings" onclick="toggleSpeakCodeSettings()"><div class="toggle-knob"></div></div>
+                    </div>
+                </div>
+                <!-- Погода -->
+                <div class="settings-section animated fadeInUp">
+                    <div class="section-title">Погода</div>
+                    <div class="settings-item">
+                        <div class="settings-label">Город</div>
+                        <input class="settings-input" id="weatherCitySettings" type="text" placeholder="Ваш город" />
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-label">API ключ OpenWeather</div>
+                        <input class="settings-input" id="weatherApiKeySettings" type="text" placeholder="API ключ OpenWeather" />
+                    </div>
+                </div>
+                <!-- Быстрые команды -->
+                <div class="settings-section animated fadeInUp">
+                    <div class="section-title">Быстрые команды</div>
+                    <div id="quickCommandsList" class="settings-item"></div>
+                    <div class="settings-item quick-section-row">
+                        <input class="settings-input" id="newQuickCommandName" type="text" placeholder="Название команды" />
+                        <input class="settings-input" id="newQuickCommandAction" type="text" placeholder="Действие (текст/ссылка/команда)" />
+                        <button class="quick-command" style="min-width:90px;" onclick="addQuickCommand()">Добавить</button>
+                    </div>
+                </div>
+                <!-- Приложения -->
+                <div class="settings-section animated fadeInUp">
+                    <div class="section-title">Приложения</div>
+                    <div id="appsList" class="settings-item"></div>
+                    <div class="settings-item quick-section-row">
+                        <input class="settings-input" id="newAppName" type="text" placeholder="Имя приложения" />
+                        <input class="settings-input" id="newAppPath" type="text" placeholder="Путь к .exe" />
+                        <button class="quick-command" style="min-width:90px;" onclick="addApp()">Добавить</button>
+                    </div>
+                </div>
+                <div class="settings-section animated fadeInUp">
+                    <div class="section-title">Тема оформления</div>
+                    <div style="font-weight:600; font-size:1.1rem; color:var(--text-primary); margin: 24px 0 8px 0;">Тема оформления</div>
+                    <div class="settings-item">
+                        <div class="settings-label">Гифка для заднего фона</div>
+                        <input type="file" id="bgGifInput" accept="image/gif" />
+                        <button class="quick-command" onclick="setBackgroundGif()">Установить гифку</button>
+                        <button class="quick-command" onclick="resetBackgroundGif()" style="margin-left:8px; background:linear-gradient(135deg, #FF3B30, #FF9500);">Сбросить фон</button>
+                    </div>
+                </div>
+                <button class="save-settings-btn" onclick="saveAllSettingsSidebar()">💾 Сохранить все настройки</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Particle.js конфигурация - Vibe Technology (улучшенная)
+        try {
+            if (document.getElementById('particles-main') && window.particlesJS) {
+                /* Отключаем основной слой, оставляем только фон */
+                document.getElementById('particles-main').style.display = 'none';
+            }
+        } catch (error) {
+            // Error handling removed
+        }
+
+        // particles.js для заднего фона
+        try {
+            if(window.particlesJS && document.getElementById('particles-bg')) {
+              particlesJS('particles-bg', {
+                particles: {
+                  number: { value: 40 }, // было 60
+                  color: { value: '#ffffff' },
+                  shape: { type: 'circle' },
+                  opacity: { value: 0.7 },
+                  size: { value: 3 },
+                  line_linked: { enable: false },
+                  move: { enable: true, speed: 0.7 }
+                },
+                interactivity: { detect_on: 'canvas', events: { onhover: { enable: false } } },
+                retina_detect: true
+              });
+            }
+        } catch (error) {
+            // Error handling removed
+        }
+        
+        // Глобальный обработчик ошибок
+        window.addEventListener('error', function(e) {
+            ensureContentVisible();
+        });
+        
+        // Обработчик unhandledrejection
+        window.addEventListener('unhandledrejection', function(e) {
+            ensureContentVisible();
+        });
+        let login_sound_is_played = false;
+        // pywebview интеграция
+        let userSettings = {};
+        let isListening = false;
+        let recognition;
+        let contentLoaded = false;
+        let alwaysListenActive = false;
+        let voiceRecognitionLoop = null;
+        let ttsEnabled = true;
+        
+        // Защита от исчезновения контента
+        function ensureContentVisible() {
+            const mainLayout = document.querySelector('.main-layout');
+            const chatArea = document.querySelector('.chat-area');
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarSections = document.querySelectorAll('.sidebar-section');
+            const messages = document.querySelectorAll('.message');
+            
+            if (mainLayout) {
+                mainLayout.style.display = 'flex';
+                mainLayout.style.opacity = '1';
+                mainLayout.style.transform = 'translateY(0)';
+            }
+            if (chatArea) {
+                chatArea.style.display = 'flex';
+                chatArea.style.opacity = '1';
+                chatArea.style.transform = 'translateX(0)';
+            }
+            if (sidebar) {
+                sidebar.style.display = 'flex';
+                sidebar.style.transform = 'translateX(0)';
+            }
+            
+            // Принудительно показываем все секции сайдбара
+            sidebarSections.forEach(section => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            });
+            
+            // Принудительно показываем все сообщения
+            messages.forEach(message => {
+                message.style.opacity = '1';
+                message.style.transform = 'translateY(0)';
+            });
+            
+            // Принудительно показываем все элементы
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = '1';
+        }
+        
+        // Загрузка настроек пользователя при старте
+        document.addEventListener('DOMContentLoaded', function() {
+            const userData = localStorage.getItem('jarvis_user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                userSettings = user.settings || {};
+                applySettings(userSettings);
+            }
+            
+            // Автоматическое изменение высоты текстового поля
+            const chatInput = document.getElementById('chatInput');
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+            
+            // Загрузка настроек из backend
+            loadSettings(); 
+            contentLoaded = true;
+            ensureContentVisible();
+            
+            // Воспроизводим звук успешного входа после загрузки
+            setTimeout(() => { 
+                playLoginSuccessSound();;
+            }, 100);
+            
+         
+            
+            // Дополнительная проверка через разные интервалы
+            setTimeout(ensureContentVisible, 1000);
+            setTimeout(ensureContentVisible, 2000);
+            setTimeout(ensureContentVisible, 5000);
+            setTimeout(ensureContentVisible, 10000);
+            
+            // Периодическая проверка каждые 30 секунд
+            setInterval(ensureContentVisible, 30000);
+
+            // При загрузке страницы — если есть гифка в настройках, ставим её как фон чата
+            if (userSettings && userSettings.gif_url) {
+                const chatArea = document.querySelector('.chat-area');
+                if (chatArea) {
+                    const gifUrl = `./gifs/${userSettings.gif_url}`;
+                    chatArea.style.setProperty('background', `url('${gifUrl}') center center / cover no-repeat`, 'important');
+                    chatArea.style.setProperty('background-image', `url('${gifUrl}')`, 'important');
+                    chatArea.style.setProperty('background-size', 'cover', 'important');
+                    chatArea.style.setProperty('background-position', 'center', 'important');
+                    chatArea.style.setProperty('background-repeat', 'no-repeat', 'important');
+                }
+                if (particlesMain) particlesMain.style.display = 'none';
+            } else {
+                // При загрузке страницы — показываем частицы по умолчанию
+                const particlesMain = document.getElementById('particles-main');
+                if (particlesMain) particlesMain.style.display = 'block';
+            }
+
+            loadQuickCommands(); // Подгружаем быстрые команды сразу при запуске
+            loadAppsSidebar();
+        });
+        
+        function applySettings(settings) {
+            try {
+                const alwaysListenToggle = document.getElementById('alwaysListenToggleSettings');
+                const soundToggle = document.getElementById('soundToggleSettings');
+                const autostartToggle = document.getElementById('autostartToggleSettings');
+                const triggerOnlyCheckbox = document.getElementById('triggerOnlyCheckbox');
+                if (alwaysListenToggle) alwaysListenToggle.classList.toggle('active', !!settings.voice_enabled);
+                if (soundToggle) soundToggle.classList.toggle('active', !!settings.sound_enabled);
+                if (autostartToggle) autostartToggle.classList.toggle('active', !!settings.autostart_enabled);
+                if (triggerOnlyCheckbox) triggerOnlyCheckbox.checked = !!settings.voice_trigger_only;
+            } catch (error) { ensureContentVisible(); }
+        }
+        
+        async function loadSettings() {
+            try {
+                if (window.pywebview) {
+                    const settings = await window.pywebview.api.get_settings();
+                    userSettings = settings;
+                    applySettingsToUI(settings);
+                }
+            } catch (error) {
+                ensureContentVisible();
+            }
+        }
+        
+        function applySettingsToUI(settings) {
+            try {
+                const aiModelSettings = document.getElementById('aiModelSettings');
+                const voiceNameSettings = document.getElementById('voiceNameSettings');
+                
+                if (settings.ai_model && aiModelSettings) aiModelSettings.value = settings.ai_model;
+                if (settings.voice_name && voiceNameSettings) voiceNameSettings.value = settings.voice_name;
+                applySettings(settings);
+                
+                // gif_url сохраняется в конфиге, но не загружается автоматически
+                // из-за ограничений безопасности браузера
+            } catch (error) {
+                ensureContentVisible();
+            }
+        }
+        
+        async function sendCommand(command) {
+            try {
+                addChatMessage(command, true);
+                showGeneratingIndicator();
+                
+                if (window.pywebview) {
+                    try {
+                        const result = await window.pywebview.api.send_command(command);
+                        addChatMessage(result, false);
+                        speakText(result);
+                    } catch (error) {
+                        addChatMessage('Ошибка выполнения команды', false);
+                    }
+                }
+                    } catch (error) {
+            ensureContentVisible();
+        }
+        }
+        
+        async function sendChatMessage() {
+            try {
+                const input = document.getElementById('chatInput');
+                if (!input) {
+                    return;
+                }
+                const message = input.value.trim();
+                if (message) {
+                    addChatMessage(message, true);
+                    input.value = '';
+                    input.style.height = 'auto';
+                    showGeneratingIndicator();
+                    
+                    if (window.pywebview) {
+                        try {
+                            // Просто отправляем в sendCommand, чтобы работал единый приоритет
+                            const result = await window.pywebview.api.send_command(message);
+                            addChatMessage(result, false);
+                            speakText(result);
+                                            } catch (error) {
+                        addChatMessage('Ошибка выполнения команды', false);
+                    }
+                    }
+                }
+                    } catch (error) {
+            ensureContentVisible();
+        }
+        }
+        
+        function handleKeyDown(event) {
+            try {
+                if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault();
+                    sendChatMessage();
+                }
+                    } catch (error) {
+            ensureContentVisible();
+        }
+        }
+        
+        function toggleAlwaysListenSettings() {
+            const toggle = document.getElementById('alwaysListenToggleSettings');
+            alwaysListenActive = toggle.classList.toggle('active');
+            userSettings.voice_enabled = alwaysListenActive;
+            saveAllSettings();
+            stopAlwaysListening();
+            if (alwaysListenActive) startAlwaysListening();
+            playToggleSound();
+        }
+        
+        function startAlwaysListening() {
+            if (!('webkitSpeechRecognition' in window)) return;
+            if (voiceRecognitionLoop) return;
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            voiceRecognitionLoop = new SpeechRecognition();
+            voiceRecognitionLoop.lang = 'ru-RU';
+            voiceRecognitionLoop.continuous = true;
+            voiceRecognitionLoop.interimResults = false;
+            voiceRecognitionLoop.onresult = function(event) {
+                const transcript = event.results[event.results.length-1][0].transcript.trim();
+                
+                // Добавляем сообщение пользователя в чат
+                addChatMessage(transcript, true);
+                showGeneratingIndicator();
+                
+                if (userSettings.voice_trigger_only) {
+                    if (transcript.toLowerCase().startsWith('джарвис')) {
+                        const query = transcript.replace(/^джарвис[ ,]*/i, '');
+                        if (query) {
+                            if (window.pywebview) {
+                                window.pywebview.api.send_command(query).then(result => {
+                                    addChatMessage(result, false);
+                                    speakText(result);
+                                }).catch(error => {
+                                    console.error('Ошибка выполнения команды:', error);
+                                    addChatMessage('Ошибка выполнения команды', false);
+                                });
+                            }
+                        }
+                    }
+                } else {
+                    // Без триггера: реагируем на любую команду
+                    if (window.pywebview) {
+                        window.pywebview.api.send_command(transcript).then(result => {
+                            addChatMessage(result, false);
+                            speakText(result);
+                        }).catch(error => {
+                            console.error('Ошибка выполнения команды:', error);
+                            addChatMessage('Ошибка выполнения команды', false);
+                        });
+                    }
+                }
+            };
+            voiceRecognitionLoop.onend = function() {
+                if (alwaysListenActive) voiceRecognitionLoop.start();
+            };
+            voiceRecognitionLoop.start();
+        }
+        function stopAlwaysListening() {
+            if (voiceRecognitionLoop) {
+                voiceRecognitionLoop.onend = null;
+                voiceRecognitionLoop.stop();
+                voiceRecognitionLoop = null;
+                
+            }
+        }
+        
+        function toggleSoundSettings() {
+            try {
+                const toggle = document.getElementById('soundToggleSettings');
+                if (!toggle) {
+                    console.error('Элемент soundToggleSettings не найден');
+                    return;
+                }
+                
+                const isActive = toggle.classList.toggle('active');
+                if (window.pywebview) {
+                    window.pywebview.api.toggle_sound(isActive);
+                    userSettings.sound_enabled = isActive;
+                    saveAllSettings();
+                    playToggleSound();
+                }
+            } catch (error) {
+                console.error('Ошибка в toggleSoundSettings:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        function toggleAutostartSettings() {
+            try {
+                const toggle = document.getElementById('autostartToggleSettings');
+                if (!toggle) {
+                    console.error('Элемент autostartToggleSettings не найден');
+                    return;
+                }
+                
+                const isActive = toggle.classList.toggle('active');
+                if (window.pywebview) {
+                    window.pywebview.api.toggle_autostart(isActive);
+                    userSettings.autostart_enabled = isActive;
+                    saveAllSettings();
+                    playToggleSound();
+                }
+            } catch (error) {
+                console.error('Ошибка в toggleAutostartSettings:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        async function updateVolume(value) {
+            try {
+                const volumeValue = document.getElementById('volumeValue');
+                if (volumeValue) volumeValue.textContent = value + '%';
+                if (window.pywebview) {
+                    try {
+                        await window.pywebview.api.set_volume(value);
+                    } catch (error) {
+                        console.error('Ошибка изменения громкости:', error);
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка в updateVolume:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        function updateSettings() {
+            try {
+                const aiModel = document.getElementById('aiModel');
+                const apiKey = document.getElementById('apiKey');
+                const voiceName = document.getElementById('voiceName');
+                const voiceNameSettings = document.getElementById('voiceNameSettings');
+                const speechSpeedSliderSettings = document.getElementById('speechSpeedSliderSettings');
+                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
+                const triggerOnlyCheckbox = document.getElementById('triggerOnlyCheckbox');
+                if (aiModel) userSettings.ai_model = aiModel.value; 
+                if (voiceName) userSettings.voice_name = voiceName.value;
+                if (voiceNameSettings) userSettings.voice_name = voiceNameSettings.value;
+                if (speechSpeedSliderSettings) userSettings.speech_speed = parseFloat(speechSpeedSliderSettings.value);
+                if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value;
+                if (triggerOnlyCheckbox) userSettings.voice_trigger_only = !!triggerOnlyCheckbox.checked;
+            } catch (error) {
+                console.error('Ошибка в updateSettings:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        async function saveSettings() {
+            try {
+                if (window.pywebview) {
+                    try {
+                        await window.pywebview.api.save_settings(userSettings);
+                    } catch (error) {
+                        console.error('Ошибка сохранения настроек:', error);
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка в saveSettings:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        async function saveAllSettings() {
+            try {
+                updateSettings();
+                
+                if (window.pywebview) {
+                    try {
+                        await window.pywebview.api.save_settings(userSettings);
+                        // Показываем уведомление об успешном сохранении
+                        const btn = document.querySelector('.save-settings-btn');
+                        if (btn) {
+                            const originalText = btn.textContent;
+                            btn.textContent = '✅ Сохранено!';
+                            btn.style.background = 'linear-gradient(135deg, #34C759, #30D158)';
+                            
+                            setTimeout(() => {
+                                btn.textContent = originalText;
+                                btn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+                            }, 2000);
+                        }
+                    } catch (error) {
+                        console.error('Ошибка сохранения настроек:', error);
+                        alert('Ошибка сохранения настроек');
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка в saveAllSettings:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        async function saveAllSettingsSidebar() {
+            try {
+                updateSettings();
+                
+                if (window.pywebview) {
+                    try {
+                        await window.pywebview.api.save_settings(userSettings);
+                        // Показываем уведомление об успешном сохранении
+                        const btn = document.querySelector('.save-settings-btn');
+                        if (btn) {
+                            const originalText = btn.textContent;
+                            btn.textContent = '✅ Сохранено!';
+                            btn.style.background = 'linear-gradient(135deg, #34C759, #30D158)';
+                            setTimeout(() => {
+                                btn.textContent = originalText;
+                                btn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
+                            }, 2000);
+                        }
+                    } catch (error) {
+                        console.error('Ошибка сохранения настроек (sidebar):', error);
+                        alert('Ошибка сохранения настроек');
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка в saveAllSettingsSidebar:', error);
+                ensureContentVisible();
+            }
+        }
+        
+
+        
+        // Голосовое озвучивание ответа JARVIS
+        function speakText(text) {
+            try {
+                if (!('speechSynthesis' in window)) return;
+ 
+                const voiceName = (userSettings && userSettings.voice_name) ? userSettings.voice_name : 'ru-RU-SvetlanaNeural';
+                const speechSpeed = (userSettings && userSettings.speech_speed) ? userSettings.speech_speed : 1.0; 
+                let volume = 0.8;
+                if (userSettings && typeof userSettings.volume === 'number') {
+                    volume = Math.max(0, Math.min(1, userSettings.volume / 100));
+                }
+
+                const utter = new SpeechSynthesisUtterance(text.replace(/^JARVIS: /, ''));
+                utter.rate = speechSpeed;
+                utter.volume = volume;
+
+                // Функция выбора голоса и озвучивания
+                const setVoiceAndSpeak = () => {
+                    const voices = window.speechSynthesis.getVoices();
+                    let selectedVoice = null;
+                    // Сначала ищем по точному совпадению имени
+                    if (voiceName) {
+                        selectedVoice = voices.find(v => v.name === voiceName);
+                    }
+                    // Если не найдено — ищем по языку
+                    if (!selectedVoice && voiceName && voiceName.startsWith('ru')) {
+                        selectedVoice = voices.find(v => v.lang === 'ru-RU');
+                    }
+                    // Если всё равно не найдено — берём первый доступный
+                    if (!selectedVoice && voices.length > 0) {
+                        selectedVoice = voices[0];
+                    }
+                    if (selectedVoice) utter.voice = selectedVoice;
+                    window.speechSynthesis.speak(utter);
+                };
+
+                // Иногда getVoices() возвращает пустой массив сразу после загрузки страницы
+                if (window.speechSynthesis.getVoices().length === 0) {
+                    window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
+                } else {
+                    setVoiceAndSpeak();
+                }
+            } catch (error) {
+                console.error('Ошибка в speakText:', error); 
+            }
+        }
+
+        // --- Голосовой ввод ---
+        const micButton = document.getElementById('micButton');
+        
+        let hasSpeechRecognition = false;
+        try {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.lang = 'ru-RU';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+                hasSpeechRecognition = true;
+
+                recognition.onstart = function() {
+                    isListening = true;
+                    micButton.classList.add('active');
+                    document.getElementById('micIcon').textContent = '🔴';
+                };
+                
+                recognition.onend = function() {
+                    isListening = false;
+                    micButton.classList.remove('active');
+                    document.getElementById('micIcon').textContent = '🎤';
+                };
+                
+                recognition.onerror = function(event) {
+                    isListening = false;
+                    micButton.classList.remove('active');
+                    document.getElementById('micIcon').textContent = '🎤';
+                };
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript.trim();
+                    
+                    // Добавляем сообщение пользователя в чат
+                    addChatMessage(transcript, true);
+                    showGeneratingIndicator();
+                    
+                    // Ключевые слова для локальных команд
+                    const localCommands = [
+                        "запусти калькулятор",
+                        "открой калькулятор",
+                        "открой блокнот",
+                        "запусти блокнот",
+                        "очисти корзину",
+                        "открой проводник",
+                        "режим сна",
+                        "статус системы",
+                        "погода",
+                        "погода в"
+                    ];
+
+                    // Проверяем, есть ли команда в списке
+                    if (localCommands.some(cmd => transcript.toLowerCase().includes(cmd))) {
+                        if (window.pywebview) {
+                            window.pywebview.api.send_command(transcript).then(result => {
+                                addChatMessage(result, false);
+                                speakText(result);
+                            }).catch(error => {
+                                console.error('Ошибка выполнения команды:', error);
+                                addChatMessage('Ошибка выполнения команды', false);
+                            });
+                        }
+                    } else {
+                        // Отправляем в чат как обычное сообщение
+                        if (window.pywebview) {
+                            window.pywebview.api.send_command(transcript).then(result => {
+                                addChatMessage(result, false);
+                                speakText(result);
+                            }).catch(error => {
+                                console.error('Ошибка выполнения команды:', error);
+                                addChatMessage('Ошибка выполнения команды', false);
+                            });
+                        }
+                    }
+                };
+            }
+        } catch (e) {
+            hasSpeechRecognition = false;
+        }
+        
+        async function toggleVoiceInput() {
+            try {
+                if (hasSpeechRecognition && recognition) {
+                    if (isListening) {
+                        recognition.stop();
+                    } else {
+                        recognition.start();
+                    }
+                } else if (window.pywebview && window.pywebview.api && window.pywebview.api.start_voice_recognition) {
+                    micButton.classList.add('active');
+                    document.getElementById('micIcon').textContent = '🔴';
+                    try {
+                        const transcript = await window.pywebview.api.start_voice_recognition();
+                        micButton.classList.remove('active');
+                        document.getElementById('micIcon').textContent = '🎤';
+                        if (transcript && typeof transcript === 'string' && transcript.trim() !== '') {
+                            document.getElementById('chatInput').value = transcript;
+                            sendChatMessage();
+                        } else {
+                            // Можно показать ошибку или проигнорировать
+                        }
+                    } catch (err) {
+                        micButton.classList.remove('active');
+                        document.getElementById('micIcon').textContent = '🎤';
+                        alert('Ошибка голосового ввода: ' + err);
+                    }
+                } else {
+                    alert('Голосовой ввод не поддерживается в этом окружении.');
+                }
+            } catch (error) {
+                console.error('Ошибка в toggleVoiceInput:', error);
+                ensureContentVisible();
+            }
+        }
+
+        function openSettingsSidebar() {
+            try {
+                const settingsSidebar = document.getElementById('settingsSidebar');
+                if (settingsSidebar) {
+                    settingsSidebar.classList.add('open');
+                    loadMicrophonesSettings();
+                    loadSettingsSidebar();
+                    // loadReminders(); // Удалено, такой функции нет
+                }
+            } catch (error) {
+                console.error('Ошибка открытия настроек:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        async function loadSettingsSidebar() {
+            try {
+                
+                if (window.pywebview) {
+                    const settings = await window.pywebview.api.get_settings();
+                    userSettings = settings;
+                    applySettingsToUISidebar(settings);
+                    
+                    // Загружаем доступные голоса
+                    try {
+                        const voices = await window.pywebview.api.get_available_voices();
+                        populateVoiceSelect(voices);
+                    } catch (error) {
+                        console.error('Ошибка загрузки голосов:', error);
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки настроек сайдбара:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        function applySettingsToUISidebar(settings) {
+            try {
+                // Применяем настройки к элементам сайдбара
+                const aiModelSettings = document.getElementById('aiModelSettings');
+                const voiceNameSettings = document.getElementById('voiceNameSettings');
+                const speechSpeedSliderSettings = document.getElementById('speechSpeedSliderSettings');
+                const speechSpeedValueSettings = document.getElementById('speechSpeedValueSettings');
+                const alwaysListenToggleSettings = document.getElementById('alwaysListenToggleSettings');
+                const soundToggleSettings = document.getElementById('soundToggleSettings');
+                const autostartToggleSettings = document.getElementById('autostartToggleSettings');
+                const speakCodeToggleSettings = document.getElementById('speakCodeToggleSettings');
+                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
+                
+                if (settings.ai_model && aiModelSettings) aiModelSettings.value = settings.ai_model;
+                if (settings.voice_name && voiceNameSettings) voiceNameSettings.value = settings.voice_name;
+                if (settings.speech_speed && speechSpeedSliderSettings) {
+                    speechSpeedSliderSettings.value = settings.speech_speed;
+                    if (speechSpeedValueSettings) speechSpeedValueSettings.textContent = settings.speech_speed + 'x';
+                }
+                if (settings.daily_reminder_text && dailyReminderTextSettings) dailyReminderTextSettings.value = settings.daily_reminder_text;
+                
+                // Применяем состояния переключателей
+                if (alwaysListenToggleSettings) {
+                    if (settings.voice_enabled) {
+                        alwaysListenToggleSettings.classList.add('active');
+                    } else {
+                        alwaysListenToggleSettings.classList.remove('active');
+                    }
+                }
+                
+                if (soundToggleSettings) {
+                    if (settings.sound_enabled) {
+                        soundToggleSettings.classList.add('active');
+                    } else {
+                        soundToggleSettings.classList.remove('active');
+                    }
+                }
+                
+                if (autostartToggleSettings) {
+                    if (settings.autostart_enabled) {
+                        autostartToggleSettings.classList.add('active');
+                    } else {
+                        autostartToggleSettings.classList.remove('active');
+                    }
+                }
+                
+                if (speakCodeToggleSettings) {
+                    if (settings.speak_code) {
+                        speakCodeToggleSettings.classList.add('active');
+                    } else {
+                        speakCodeToggleSettings.classList.remove('active');
+                    }
+                }
+                
+                applySettings(settings);
+            } catch (error) {
+                console.error('Ошибка в applySettingsToUISidebar:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        function closeSettingsSidebar() {
+            try {
+                const settingsSidebar = document.getElementById('settingsSidebar');
+                if (settingsSidebar) {
+                    settingsSidebar.classList.remove('open');
+                }
+            } catch (error) {
+                console.error('Ошибка закрытия настроек:', error);
+                ensureContentVisible();
+            }
+        }
+        async function loadMicrophonesSettings() {
+            try {
+                if (window.pywebview) {
+                    const mics = await window.pywebview.api.get_microphones();
+                    const select = document.getElementById('microphoneSelectSettings');
+                    if (select) {
+                        select.innerHTML = '';
+                        mics.forEach((mic) => {
+                            const opt = document.createElement('option');
+                            opt.value = mic.index;
+                            opt.textContent = mic.name;
+                            select.appendChild(opt);
+                        });
+                    }
+                }
+            } catch (e) { 
+                console.error('Ошибка получения микрофонов:', e);
+                ensureContentVisible();
+            }
+        }
+        async function testMicrophoneSettings() {
+            try {
+                const select = document.getElementById('microphoneSelectSettings');
+                const micTestResult = document.getElementById('micTestResult');
+                
+                if (!select || !micTestResult) {
+                    console.error('Элементы микрофона не найдены');
+                    return;
+                }
+                
+                const idx = select.value;
+                if (window.pywebview) {
+                    try {
+                        const res = await window.pywebview.api.test_microphone(parseInt(idx));
+                        if (res.success) {
+                            micTestResult.textContent = 'Уровень сигнала: ' + res.avg_level;
+                        } else {
+                            micTestResult.textContent = 'Ошибка: ' + res.error;
+                        }
+                    } catch (e) { 
+                        micTestResult.textContent = 'Ошибка теста микрофона'; 
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка в testMicrophoneSettings:', error);
+                ensureContentVisible();
+            }
+        }
+        function updateVolumeSettings(val) {
+            try {
+                const volumeValueSettings = document.getElementById('volumeValueSettings');
+                if (volumeValueSettings) volumeValueSettings.textContent = val + '%';
+                if (window.pywebview) window.pywebview.api.set_volume(parseInt(val));
+            } catch (error) {
+                console.error('Ошибка в updateVolumeSettings:', error);
+                ensureContentVisible();
+            }
+        }
+        function updateMicrophoneSettings() {
+            try {
+                // Можно реализовать сохранение выбранного микрофона через pywebview.api.save_settings
+            } catch (error) {
+                console.error('Ошибка в updateMicrophoneSettings:', error);
+                ensureContentVisible();
+            }
+        }
+
+        async function setBackgroundGif() {
+            try {
+                const input = document.getElementById('bgGifInput');
+                if (!input) return;
+                if (!input.files || input.files.length === 0) {
+                    alert('Пожалуйста, выберите GIF файл');
+                    return;
+                }
+                const file = input.files[0];
+                if (!file.type.includes('gif')) {
+                    alert('Пожалуйста, выберите GIF файл');
+                    return;
+                }
+                const fileUrl = URL.createObjectURL(file);
+                const globalBg = document.getElementById('global-bg');
+                if (globalBg) {
+                    globalBg.style.background = `url('${fileUrl}') center center / cover no-repeat`;
+                    globalBg.style.backgroundImage = `url('${fileUrl}')`;
+                    globalBg.style.backgroundSize = 'cover';
+                    globalBg.style.backgroundPosition = 'center';
+                    globalBg.style.backgroundRepeat = 'no-repeat';
+                }
+                const particlesMain = document.getElementById('particles-main');
+                if (particlesMain) particlesMain.style.display = 'none';
+                alert('Гифка установлена как фон приложения!');
+            } catch (error) {
+                alert('Ошибка установки гифки: ' + error.message);
+                ensureContentVisible();
+            }
+        }
+
+        function resetBackgroundGif() {
+            const globalBg = document.getElementById('global-bg');
+            if (globalBg) {
+                globalBg.style.background = '';
+                globalBg.style.backgroundImage = '';
+            }
+            const particlesMain = document.getElementById('particles-main');
+            if (particlesMain) particlesMain.style.display = 'block';
+        }
+
+        // Логика для загрузки/сохранения всех параметров, анимаций, быстрых команд, приложений и т.д.
+
+        // (Реализую JS-функции: openSettingsSidebar, closeSettingsSidebar, loadMicrophonesSettings, testMicrophoneSettings, updateVolumeSettings, updateMicrophoneSettings, toggleAlwaysListenSettings, toggleSoundSettings, toggleAutostartSettings, updateSpeechSpeedSettings, addQuickCommand, addApp, toggleDailyRemindersSettings, saveAllSettingsSidebar и т.д.)
+
+        // Периодически обновлять системную статистику через pywebview.api.get_system_stats
+        
+        function copyToClipboard(btn) {
+            try {
+                const text = btn.parentElement.querySelector('.assistant-text').textContent;
+                navigator.clipboard.writeText(text);
+                playSoundEffect('./backend/notification_sound.mp3');
+                btn.textContent = "✔";
+                setTimeout(() => btn.textContent = "📋", 1000);
+            } catch (error) {
+                console.error('Ошибка в copyToClipboard:', error);
+                // Не вызываем ensureContentVisible здесь, так как это не критично
+            }
+        }
+
+        async function runAppByName(name) {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.run_app_by_name(name);
+                } catch (e) { return 'Ошибка запуска приложения: ' + e; }
+            }
+        }
+        async function expandWindow() {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.expand_window();
+                } catch (e) { return 'Ошибка expand_window: ' + e; }
+            }
+        }
+        async function getAnswer(text) {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.answer(text);
+                } catch (e) { return 'Ошибка ответа: ' + e; }
+            }
+        }
+        async function closeApp(command) {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.close_app(command);
+                } catch (e) { return 'Ошибка закрытия приложения: ' + e; }
+            }
+        }
+        async function handleVolumeCommand(command) {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.handle_volume_command(command);
+                } catch (e) { return 'Ошибка громкости: ' + e; }
+            }
+        }
+        async function systemControl(action, value=null) {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.system_control(action, value);
+                } catch (e) { return 'Ошибка управления системой: ' + e; }
+            }
+        }
+        async function loadMainWindow() {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.load_main_window();
+                } catch (e) { return 'Ошибка загрузки окна: ' + e; }
+            }
+        }
+        async function getLocationWeather() {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.get_location_weather();
+                } catch (e) { return 'Ошибка погоды: ' + e; }
+            }
+        }
+        async function toggleMicrophone(enabled) {
+            if (window.pywebview) {
+                try {
+                    return await window.pywebview.api.toggle_microphone(enabled);
+                } catch (e) { return 'Ошибка микрофона: ' + e; }
+            }
+        }
+
+        // Сбросить гифку
+        function resetBackgroundGif() {
+            const globalBg = document.getElementById('global-bg');
+            if (globalBg) {
+                globalBg.style.background = '';
+                globalBg.style.backgroundImage = '';
+            }
+            const particlesMain = document.getElementById('particles-main');
+            if (particlesMain) particlesMain.style.display = 'block';
+        }
+
+        // Добавить CSS для плавной смены фона
+        const style = document.createElement('style');
+        style.innerHTML = `body { transition: background 0.7s cubic-bezier(0.4,0,0.2,1); }`;
+        document.head.appendChild(style);
+
+        // Скрывать system-stats при открытии шторки
+        function toggleSystemStatsSidebar(open) {
+            const stats = document.getElementById('system-stats');
+            if (!stats) return;
+            if (open) stats.style.display = 'none';
+            else stats.style.display = '';
+        }
+        // Модифицируем openSettingsSidebar и closeSettingsSidebar
+        const origOpenSettingsSidebar = window.openSettingsSidebar;
+        window.openSettingsSidebar = function() {
+            origOpenSettingsSidebar();
+            toggleSystemStatsSidebar(true);
+        };
+        const origCloseSettingsSidebar = window.closeSettingsSidebar;
+        window.closeSettingsSidebar = function() {
+            origCloseSettingsSidebar();
+            toggleSystemStatsSidebar(false);
+        };
+
+        // --- Добавить недостающие функции для сайдбара настроек ---
+        function updateSpeechSpeedSettings(val) {
+            try {
+                const speechSpeedValueSettings = document.getElementById('speechSpeedValueSettings');
+                if (speechSpeedValueSettings) speechSpeedValueSettings.textContent = val + 'x';
+                if (window.userSettings) userSettings.speech_speed = parseFloat(val);
+            } catch (error) {
+                console.error('Ошибка в updateSpeechSpeedSettings:', error);
+            }
+        }
+        function toggleDailyRemindersSettings() {
+            try {
+                const toggle = document.getElementById('dailyRemindersToggleSettings');
+                if (!toggle) return;
+                const isActive = toggle.classList.toggle('active');
+                if (window.userSettings) userSettings.daily_reminders = isActive;
+            } catch (error) {
+                console.error('Ошибка в toggleDailyRemindersSettings:', error);
+            }
+        }
+        // --- Быстрые команды ---
+        function renderQuickCommands() {
+            const list = document.getElementById('quickCommandsList');
+            list.innerHTML = '';
+            const cmds = userSettings.quick_commands || [];
+            if (!cmds.length) {
+                list.innerHTML = '<div class="quick-empty">Нет быстрых команд</div>';
+                return;
+            }
+            cmds.forEach((cmd, idx) => {
+                const div = document.createElement('div');
+                div.className = 'quick-card';
+                div.innerHTML = `<span class='quick-title'>⚡ ${cmd.name}</span> <span class='quick-action'>${cmd.action}</span>`;
+                const btns = document.createElement('span');
+                btns.className = 'quick-btns';
+                const btnRun = document.createElement('button');
+                btnRun.textContent = '▶';
+                btnRun.title = 'Выполнить';
+                btnRun.className = 'quick-command';
+                btnRun.onclick = () => sendCommand(cmd.action);
+                const btnDel = document.createElement('button');
+                btnDel.textContent = '✖';
+                btnDel.title = 'Удалить';
+                btnDel.className = 'quick-command';
+                btnDel.onclick = () => { userSettings.quick_commands.splice(idx,1); saveQuickCommands(); };
+                btns.appendChild(btnRun);
+                btns.appendChild(btnDel);
+                div.appendChild(btns);
+                list.appendChild(div);
+            });
+        }
+        function addQuickCommand() {
+            const name = document.getElementById('newQuickCommandName');
+            const action = document.getElementById('newQuickCommandAction');
+            if (!name.value.trim() || !action.value.trim()) return;
+            if (!userSettings.quick_commands) userSettings.quick_commands = [];
+            userSettings.quick_commands.push({name: name.value.trim(), action: action.value.trim()});
+            name.value = '';
+            action.value = '';
+            saveQuickCommands();
+            name.focus();
+        }
+        function saveQuickCommands() {
+            if (window.pywebview && window.pywebview.api && window.pywebview.api.save_settings) {
+                window.pywebview.api.save_settings({quick_commands: userSettings.quick_commands});
+            }
+            renderQuickCommands();
+        }
+        function loadQuickCommands() {
+            if (window.pywebview && window.pywebview.api && window.pywebview.api.get_settings) {
+                window.pywebview.api.get_settings().then(settings => {
+                    userSettings.quick_commands = settings.quick_commands || [];
+                    renderQuickCommands();
+                });
+            }
+        }
+        // --- Приложения ---
+        function renderApps() {
+            const list = document.getElementById('appsList');
+            list.innerHTML = '';
+            const apps = userSettings.user_apps || [];
+            if (!apps.length) {
+                list.innerHTML = '<div class="quick-empty">Нет приложений</div>';
+                return;
+            }
+            apps.forEach((app, idx) => {
+                const div = document.createElement('div');
+                div.className = 'quick-card';
+                div.innerHTML = `<span class='quick-title'>🖥️ ${app.name}</span> <span class='quick-action'>${app.path}</span>`;
+                const btns = document.createElement('span');
+                btns.className = 'quick-btns';
+                const btnRun = document.createElement('button');
+                btnRun.textContent = '▶';
+                btnRun.title = 'Запустить';
+                btnRun.className = 'quick-command';
+                btnRun.onclick = () => runAppByName(app.name);
+                const btnDel = document.createElement('button');
+                btnDel.textContent = '✖';
+                btnDel.title = 'Удалить';
+                btnDel.className = 'quick-command';
+                btnDel.onclick = () => { userSettings.user_apps.splice(idx,1); saveApps(); };
+                btns.appendChild(btnRun);
+                btns.appendChild(btnDel);
+                div.appendChild(btns);
+                list.appendChild(div);
+            });
+        }
+        function addApp() {
+            const name = document.getElementById('newAppName');
+            const path = document.getElementById('newAppPath');
+            if (!name.value.trim() || !path.value.trim()) return;
+            if (!userSettings.user_apps) userSettings.user_apps = [];
+            userSettings.user_apps.push({name: name.value.trim(), path: path.value.trim()});
+            name.value = '';
+            path.value = '';
+            saveApps();
+            name.focus();
+        }
+        function saveApps() {
+            if (window.pywebview && window.pywebview.api && window.pywebview.api.save_settings) {
+                window.pywebview.api.save_settings({user_apps: userSettings.user_apps});
+            }
+            renderApps();
+        }
+        function loadAppsSidebar() {
+            if (window.pywebview && window.pywebview.api && window.pywebview.api.get_settings) {
+                window.pywebview.api.get_settings().then(settings => {
+                    userSettings.user_apps = settings.user_apps || [];
+                    renderApps();
+                });
+            }
+        }
+        // При открытии сайдбара загружать команды и приложения
+        const origOpenSettingsSidebarQC = window.openSettingsSidebar;
+        window.openSettingsSidebar = function() {
+            origOpenSettingsSidebarQC();
+            loadQuickCommands();
+            loadAppsSidebar();
+        };
+
+        // Добавляю дефолтные приложения
+        const DEFAULT_APPS = [
+          {name: 'Командная строка', path: 'cmd.exe'},
+          {name: 'Блокнот', path: 'notepad.exe'},
+          {name: 'Проводник', path: 'explorer.exe'},
+          {name: 'Калькулятор', path: 'calc.exe'},
+          {name: 'Paint', path: 'mspaint.exe'}
+        ];
+        function getAllApps() {
+          const userApps = userSettings.user_apps || [];
+          // Не дублируем дефолтные, если пользователь их уже добавил
+          const userAppNames = userApps.map(a => a.name.toLowerCase());
+          return [...DEFAULT_APPS.filter(a => !userAppNames.includes(a.name.toLowerCase())), ...userApps];
+        }
+
+        // Озвучка ответов нейросети
+        function toggleTTSSettings() {
+          const toggle = document.getElementById('ttsToggleSettings');
+          ttsEnabled = toggle.classList.toggle('active');
+          userSettings.tts_enabled = ttsEnabled;
+          saveAllSettings();
+        }
+        function speakText(text) {
+          if (!ttsEnabled) return;
+          // ... остальной код озвучки ...
+        }
+
+        function safeAddChatMessage(message, isUser = false) {
+            try {
+                // Декодируем экранированные символы
+                let decodedMessage = message;
+                if (typeof message === 'string') {
+                    decodedMessage = message
+                        .replace(/\\n/g, '\n')
+                        .replace(/\\r/g, '\r')
+                        .replace(/\\t/g, '\t')
+                        .replace(/\\'/g, "'")
+                        .replace(/\\"/g, '"')
+                        .replace(/\\\\/g, '\\');
+                }
+                
+                addChatMessage(decodedMessage, isUser);
+            } catch (error) {
+                console.error('Ошибка в safeAddChatMessage:', error);
+                // Fallback - добавляем как есть
+                addChatMessage(message, isUser);
+            }
+        }
+        
+        window.receiveChatResponse = function(data) {
+            if (data && data.response) {
+                hideGeneratingIndicator();
+                safeAddChatMessage(data.response, false);
+                speakText(data.response);
+            }
+        };
+
+        function renderSidebarQuickCommands() {
+            const sidebarList = document.getElementById('sidebarQuickCommandsList');
+            if (!sidebarList) return;
+            sidebarList.innerHTML = '';
+            const cmds = userSettings.quick_commands || [];
+            if (!cmds.length) {
+                sidebarList.innerHTML = '<div class="quick-empty">Нет быстрых команд</div>';
+                return;
+            }
+            cmds.forEach(cmd => {
+                const btn = document.createElement('button');
+                btn.className = 'quick-command';
+                btn.textContent = cmd.name;
+                btn.onclick = () => sendCommand(cmd.action);
+                sidebarList.appendChild(btn);
+            });
+        }
+        // После загрузки и изменения команд:
+        function loadQuickCommands() {
+            if (window.pywebview && window.pywebview.api && window.pywebview.api.get_settings) {
+                window.pywebview.api.get_settings().then(settings => {
+                    userSettings.quick_commands = settings.quick_commands || [];
+                    renderQuickCommands();
+                    renderSidebarQuickCommands();
+                });
+            }
+        }
+        function saveQuickCommands() {
+            if (window.pywebview && window.pywebview.api && window.pywebview.api.save_settings) {
+                window.pywebview.api.save_settings({quick_commands: userSettings.quick_commands});
+            }
+            renderQuickCommands();
+            renderSidebarQuickCommands();
+        }
+        // Голосовой ввод с триггером 'Джарвис':
+        function startAlwaysListening() {
+            if (!('webkitSpeechRecognition' in window)) return;
+            if (voiceRecognitionLoop) return;
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            voiceRecognitionLoop = new SpeechRecognition();
+            voiceRecognitionLoop.lang = 'ru-RU';
+            voiceRecognitionLoop.continuous = true;
+            voiceRecognitionLoop.interimResults = false;
+            voiceRecognitionLoop.onresult = function(event) {
+                const transcript = event.results[event.results.length-1][0].transcript.trim();
+                
+                // Добавляем сообщение пользователя в чат
+                addChatMessage(transcript, true);
+                showGeneratingIndicator();
+                
+                if (userSettings.voice_trigger_only) {
+                    if (transcript.toLowerCase().startsWith('джарвис')) {
+                        const query = transcript.replace(/^джарвис[ ,]*/i, '');
+                        if (query) {
+                            if (window.pywebview) {
+                                window.pywebview.api.send_command(query).then(result => {
+                                    addChatMessage(result, false);
+                                    speakText(result);
+                                }).catch(error => {
+                                    console.error('Ошибка выполнения команды:', error);
+                                    addChatMessage('Ошибка выполнения команды', false);
+                                });
+                            }
+                        }
+                    }
+                } else {
+                    // Без триггера: реагируем на любую команду
+                    if (window.pywebview) {
+                        window.pywebview.api.send_command(transcript).then(result => {
+                            addChatMessage(result, false);
+                            speakText(result);
+                        }).catch(error => {
+                            console.error('Ошибка выполнения команды:', error);
+                            addChatMessage('Ошибка выполнения команды', false);
+                        });
+                    }
+                }
+            };
+            voiceRecognitionLoop.onend = function() {
+                if (alwaysListenActive) voiceRecognitionLoop.start();
+            };
+            voiceRecognitionLoop.start();
+        }
+        function toggleTriggerOnlySetting() {
+            const toggle = document.getElementById('triggerOnlyToggleSettings');
+            const isActive = toggle.classList.toggle('active');
+            userSettings.voice_trigger_only = isActive;
+            saveAllSettings();
+            playToggleSound();
+        }
+
+        function toggleSpeakCodeSettings() {
+            const toggle = document.getElementById('speakCodeToggleSettings');
+            const isActive = toggle.classList.toggle('active');
+            userSettings.speak_code = isActive;
+            saveAllSettings();
+            playToggleSound();
+        }
+
+        function populateVoiceSelect(voices) {
+            const voiceSelect = document.getElementById('voiceNameSettings');
+            if (!voiceSelect) return;
+            
+            // Очищаем текущие опции
+            voiceSelect.innerHTML = '';
+            
+            // Добавляем новые опции
+            voices.forEach(voice => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.textContent = voice.display_name;
+                voiceSelect.appendChild(option);
+            });
+            
+            // Устанавливаем текущий выбранный голос
+            if (userSettings && userSettings.voice_name) {
+                voiceSelect.value = userSettings.voice_name;
+            }
+        }
+
+        function formatAIResponse(text) {
+            if (!text) return '';
+             
+            let formatted = text
+                .replace(/\n\n/g, '</p><p>')  // Двойные переносы = новые параграфы
+                .replace(/\n/g, '<br>')       // Одинарные переносы = <br>
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // **текст** -> жирный
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')              // *текст* -> курсив
+                .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')  // Блоки кода
+                .replace(/^# (.*$)/gm, '<h3>$1</h3>')              // # Заголовок
+                .replace(/^## (.*$)/gm, '<h4>$1</h4>')             // ## Подзаголовок
+                .replace(/^### (.*$)/gm, '<h5>$1</h5>')            // ### Подподзаголовок
+                .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')          // Нумерованные списки
+                .replace(/^- (.*$)/gm, '<li>$1</li>');             // Маркированные списки
+            
+            // Оборачиваем в параграф если нет HTML тегов
+            if (!formatted.includes('<') || formatted.includes('<br>')) {
+                formatted = '<p>' + formatted + '</p>';
+            }
+            
+            // Обрабатываем списки
+            if (formatted.includes('<li>')) {
+                formatted = formatted.replace(/(<li>.*?<\/li>)+/g, function(match) {
+                    return '<ul>' + match + '</ul>';
+                });
+            }
+            
+            return formatted;
+        }
+        
+        function showGeneratingIndicator() {
+            const chatMessages = document.getElementById('chatMessages');
+            if (!chatMessages) return;
+            
+            const generatingDiv = document.createElement('div');
+            generatingDiv.className = 'message assistant generating';
+            generatingDiv.id = 'generatingIndicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar';
+            avatar.textContent = 'V';
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            content.innerHTML = `
+                <div class="generating-indicator">
+                    Generating
+                    <div class="generating-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            
+            generatingDiv.appendChild(avatar);
+            generatingDiv.appendChild(content);
+            chatMessages.appendChild(generatingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideGeneratingIndicator() {
+            const generatingIndicator = document.getElementById('generatingIndicator');
+            if (generatingIndicator) {
+                generatingIndicator.remove();
+            }
+        }
+        
+        function addChatMessage(message, isUser = false) {
+            try {
+                // Скрываем индикатор generating если он есть
+                hideGeneratingIndicator();
+                const chatMessages = document.getElementById('chatMessages');
+                if (!chatMessages) {
+                    console.error('Элемент chatMessages не найден');
+                    return;
+                }
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'assistant'} new`;
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.textContent = isUser ? 'U' : 'V';
+                const content = document.createElement('div');
+                content.className = 'message-content';
+                if (isUser) {
+                    content.textContent = message;
+                } else {
+                    // Форматируем ответ AI
+                    content.innerHTML = `<div class=\"message-text\"></div>`;
+                    // Добавляем кнопку копирования
+                    const copyBtn = document.createElement('button');
+                    copyBtn.className = 'copy-btn';
+                    copyBtn.innerHTML = '📋';
+                    copyBtn.title = 'Копировать';
+                    copyBtn.onclick = () => copyToClipboard(message);
+                    content.appendChild(copyBtn);
+                    messageDiv.appendChild(avatar);
+                    messageDiv.appendChild(content);
+                    chatMessages.appendChild(messageDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight; 
+                    const messageTextDiv = content.querySelector('.message-text'); 
+                    typeWriterEffect(messageTextDiv, message, 5, () => {
+                        messageTextDiv.classList.add('visible');
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    });
+                    setTimeout(() => {
+                        messageDiv.classList.remove('new');
+                    }, 500);
+                    return;
+                }
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(content);
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                setTimeout(() => {
+                    messageDiv.classList.remove('new');
+                }, 500);
+            } catch (error) {
+                console.error('Ошибка в addChatMessage:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        function copyToClipboard(text) {
+            try {
+                // Удаляем HTML теги для чистого копирования
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = text;
+                const cleanText = tempDiv.textContent || tempDiv.innerText || '';
+                
+                // Пробуем современный API
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(cleanText).then(() => {
+                        showNotification('Скопировано в буфер обмена!');
+                    }).catch(err => {
+                        console.error('Ошибка копирования:', err);
+                        // Fallback для старых браузеров
+                        fallbackCopyTextToClipboard(cleanText);
+                    });
+                } else {
+                    // Fallback для небезопасного контекста
+                    fallbackCopyTextToClipboard(cleanText);
+                }
+            } catch (error) {
+                console.error('Ошибка копирования:', error);
+                showNotification('Ошибка копирования');
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+            try {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                textArea.style.top = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                if (successful) {
+                    showNotification('Скопировано в буфер обмена!');
+                } else {
+                    showNotification('Ошибка копирования');
+                }
+            } catch (err) {
+                console.error('Fallback копирование не удалось:', err);
+                showNotification('Ошибка копирования');
+            }
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 5px;
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2000);
+        }
+        function typeWriterEffect(element, text, speed = 10, callback) {
+            let i = 0;
+            function type() {
+                if (i <= text.length) {
+                    element.innerHTML = formatAIResponse(text.slice(0, i));
+                    element.scrollTop = element.scrollHeight;
+                    i++;
+                    setTimeout(type, speed);
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        } 
+
+        function playSoundEffect(soundPath) {
+            
+            if (!userSettings || !userSettings.sound_enabled) { 
+                return;
+            } 
+            try {
+                const audio = new Audio(soundPath);
+                audio.volume = 0.5;
+                audio.preload = 'auto';
+                
+                audio.onloadstart = () => {   
+                };
+                audio.oncanplay = () => {  
+                };
+                audio.onerror = (error) => {  
+                };
+                
+                audio.onended = () => {  
+                };
+                 
+                audio.play().catch(error => {  
+                });
+                
+            } catch (error) { 
+            }
+        }
+
+        function playToggleSound() {
+            // Воспроизводим звук при переключении toggle
+            if (userSettings && userSettings.sound_enabled) {
+                playSoundEffect('./backend/toggle_sound.mp3');
+            }
+        }
+        function playLoginSuccessSound() { 
+            const userData = localStorage.getItem('jarvis_user'); 
+            
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData); 
+                    
+                    if (user && user.login) { 
+                        try {
+                            let soundPath = './backend/login_success.mp3'; 
+                            const audio = new Audio(soundPath);
+                            audio.volume = 0.5;
+                            audio.preload = 'auto';
+                            
+                            audio.onloadstart = () => {  
+                            };
+                            audio.oncanplay = () => {  
+                            };
+                            audio.onerror = (error) => {  
+                            };
+                            
+                            audio.onended = () => {  
+                            };
+                             
+                            audio.play().catch(error => {  
+                            });
+                        
+                        } catch (error) { 
+                        }
+                        login_sound_is_played = true;
+                    } else { 
+                    }
+                } catch (error) { 
+                }
+            } else { 
+            } 
+        }
+
+        function resetLoginSoundFlag() {
+            // Сбрасываем флаг для возможности воспроизведения звука при следующем входе
+            login_sound_is_played = false;
+        }
+    </script>
+</body>
+</html> 

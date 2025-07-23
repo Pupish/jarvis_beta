@@ -1,0 +1,38 @@
+{
+  "quick_commands": [
+    {
+      "name": "123",
+      "action": "123123"
+    },
+    {
+      "name": "123123",
+      "action": "123123"
+    },
+    {
+      "name": "333",
+      "action": "333"
+    }
+  ],
+  "voice_enabled": true,
+  "sound_enabled": true,
+  "autostart_enabled": true,
+  "current_user": null,
+  "ai_model": "openai/gpt-3.5-turbo",
+  "voice_name": "ru-RU-SvetlanaNeural",
+  "weather_city": "Москва",
+  "weather_api_key": "",
+  "tts_enabled": true,
+  "speech_speed": 1,
+  "user_apps": [
+    {
+      "name": "музыка",
+      "path": "C:\\Users\\skjmdfgmj\\AppData\\Local\\Programs\\YandexMusic\\Яндекс Музыка.exe"
+    },
+    {
+      "name": "123123",
+      "path": "123123213"
+    }
+  ],
+  "voice_trigger_only": true,
+  "speak_code": false
+}
