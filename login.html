@@ -552,7 +552,7 @@
                         }
                          
                         setTimeout(() => {
-                            window.location.href = 'main.html';
+                            window.location.href = 'C:\\Program Files (x86)\\Jarvis\\main.html';
                         }, 1500);
                     } else { 
                         loginBtn.textContent = '❌ Ошибка входа: ' + result.message;
@@ -577,16 +577,6 @@
                 }, 2000);
             }
         }); 
-        document.addEventListener('DOMContentLoaded', function() { 
-            const userData = localStorage.getItem('jarvis_user');
-            if (!userData) { 
-                 setTimeout(() => {
-                     document.getElementById('username').value = 'test';
-                     document.getElementById('password').value = 'test';
-                     document.getElementById('token').value = 'TEST';
-                 }, 1000);
-            }
-        });
     </script>
 </body>
 </html> 
