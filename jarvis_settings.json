@@ -1,6 +1,6 @@
 {
   "quick_commands": [],
-  "voice_enabled": false,
+  "voice_enabled": true,
   "sound_enabled": true,
   "autostart_enabled": true,
   "current_user": null,
