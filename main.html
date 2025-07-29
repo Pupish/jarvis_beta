@@ -45,7 +45,6 @@
             color: var(--text-primary) !important;
         }
 
-        /* Particle.js контейнер */
         #particles-js {
             position: fixed;
             top: 0;
@@ -57,7 +56,6 @@
             pointer-events: none;
         }
 
-        /* Улучшенные скругления и стекло */
         .main-layout {
             position: relative;
             z-index: 60;
@@ -90,7 +88,6 @@
             }
         }
 
-        /* Сайдбар */
         .sidebar {
             width: 340px;
             background: var(--background-primary);
@@ -305,7 +302,6 @@
             box-shadow: 0 2px 12px 0 rgba(255,45,146,0.3);
         }
 
-        /* Настройки в сайдбаре */
         .settings-item {
             margin-bottom: 16px;
         }
@@ -354,7 +350,6 @@
             transform: translateY(-2px);
         }
 
-        /* Основная область чата */
         .chat-area {
             flex: 1;
             display: flex;
@@ -662,7 +657,7 @@
             gap: 12px;
         }
 
-        .send-button, .mic-button {
+        .send-button, .mic-button, .stop-speech-button, .clear-chat-button {
             background: #fff !important;
             color: #111 !important;
             border: none;
@@ -678,7 +673,7 @@
             box-shadow: none !important;
         }
 
-        .send-button:hover, .mic-button:hover {
+        .send-button:hover, .mic-button:hover, .stop-speech-button:hover, .clear-chat-button:hover {
             background: #eee !important;
             color: #000 !important;
             transform: translateY(-2px);
@@ -690,7 +685,6 @@
             animation: none;
         }
 
-        /* Статус подключения */
         .status-indicator {
             display: flex;
             align-items: center;
@@ -723,7 +717,6 @@
             font-weight: 500;
         }
 
-        /* Скроллбар */
         .chat-messages::-webkit-scrollbar,
         .sidebar::-webkit-scrollbar {
             width: 6px;
@@ -747,18 +740,15 @@
             background: var(--secondary-color);
         }
 
-        /* Анимации для новых сообщений */
         .message.new {
             animation: slideInUp 0.6s ease-out forwards;
         }
 
-        /* Чат и карточки */
         .chat-container, .card, .input-area, .message-bubble {
             border-radius: 0 !important;
             box-shadow: none !important;
         }
 
-        /* Responsive */
         @media (max-width: 1200px) {
             .sidebar {
                 width: 300px;
@@ -887,7 +877,6 @@
         .animated.fadeInUp {
             animation: fadeInUp 0.7s cubic-bezier(0.4,0,0.2,1);
         }
-        /* Системная статистика возле чата */
         .system-stats {
             display: flex;
             gap: 24px;
@@ -964,11 +953,9 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-color);
         }
-        /* Исправление: при открытой settings-sidebar скрывать system-stats */
         .settings-sidebar.open ~ .chat-area #system-stats {
             display: none !important;
         }
-        /* Альтернатива: переместить system-stats ниже, если шторка открыта */
         @media (min-width: 900px) {
             .settings-sidebar.open ~ .chat-area {
                 margin-top: 60px;
@@ -977,14 +964,28 @@
 
         .quick-section-row {
           display: flex;
+          flex-direction: column;
           gap: 8px;
-          align-items: center;
           margin-bottom: 8px;
         }
         .quick-section-row input {
-          flex: 1;
-          padding-left: 10px;
-          background: none;
+          width: 100%;
+          padding: 10px;
+          background: var(--background-secondary);
+          border: var(--glass-border);
+          border-radius: 8px;
+          color: var(--text-primary);
+          font-size: 0.9rem;
+          outline: none;
+          transition: all 0.3s ease;
+        }
+        .quick-section-row input:focus {
+          border-color: var(--primary-color);
+          background: var(--background-tertiary);
+        }
+        .quick-section-row button {
+          align-self: center;
+          margin-top: 8px;
         }
         .quick-card {
           display: flex;
@@ -996,7 +997,7 @@
           margin-bottom: 8px;
           box-shadow: var(--shadow-light);
           transition: box-shadow 0.2s, background 0.2s;
-          min-width: 0; /* Для обрезки текста */
+          min-width: 0; 
         }
         .quick-title, .quick-action {
           white-space: nowrap;
@@ -1005,10 +1006,10 @@
           display: block;
         }
         .quick-title {
-          max-width: 90px; /* Можно увеличить при необходимости */
+          max-width: 90px;  
         }
         .quick-action {
-          margin-right: 18px; /* Для приложений можно увеличить */
+          margin-right: 18px; 
         }
         .quick-btns {
           flex-shrink: 0;
@@ -1155,6 +1156,12 @@
                         onkeydown="handleKeyDown(event)"
                     ></textarea>
                     <div class="chat-buttons">
+                        <button id="stopSpeechButton" class="stop-speech-button" title="Остановить речь" onclick="stopSpeech()">
+                            ⏹️
+                        </button>
+                        <button id="clearChatButton" class="clear-chat-button" title="Очистить чат" onclick="clearChat()">
+                            🗑️
+                        </button>
                         <button id="micButton" class="mic-button" title="Голосовой ввод" onclick="toggleVoiceInput()">
                             <span id="micIcon">🎤</span>
                         </button>
@@ -1261,7 +1268,7 @@
                     <div class="settings-item quick-section-row">
                         <input class="settings-input" id="newQuickCommandName" type="text" placeholder="Название команды" />
                         <input class="settings-input" id="newQuickCommandAction" type="text" placeholder="Действие (текст/ссылка/команда)" />
-                        <button class="quick-command" style="min-width:90px;" onclick="addQuickCommand()">Добавить</button>
+                        <button class="quick-command" onclick="addQuickCommand()">Добавить</button>
                     </div>
                 </div>
                 <!-- Приложения -->
@@ -1271,7 +1278,7 @@
                     <div class="settings-item quick-section-row">
                         <input class="settings-input" id="newAppName" type="text" placeholder="Имя приложения" />
                         <input class="settings-input" id="newAppPath" type="text" placeholder="Путь к .exe" />
-                        <button class="quick-command" style="min-width:90px;" onclick="addApp()">Добавить</button>
+                        <button class="quick-command" onclick="addApp()">Добавить</button>
                     </div>
                 </div>
                 <div class="settings-section animated fadeInUp">
@@ -1279,7 +1286,7 @@
                     <div style="font-weight:600; font-size:1.1rem; color:var(--text-primary); margin: 24px 0 8px 0;">Тема оформления</div>
                     <div class="settings-item">
                         <div class="settings-label">Гифка для заднего фона</div>
-                        <input type="file" id="bgGifInput" accept="image/gif" />
+                        <input type="file" id="bgGifInput" accept="image/gif,image/webp,video/webm" />
                         <button class="quick-command" onclick="setBackgroundGif()">Установить гифку</button>
                         <button class="quick-command" onclick="resetBackgroundGif()" style="margin-left:8px; background:linear-gradient(135deg, #FF3B30, #FF9500);">Сбросить фон</button>
                     </div>
@@ -1290,22 +1297,17 @@
     </div>
 
     <script>
-        // Particle.js конфигурация - Vibe Technology (улучшенная)
         try {
             if (document.getElementById('particles-main') && window.particlesJS) {
-                /* Отключаем основной слой, оставляем только фон */
                 document.getElementById('particles-main').style.display = 'none';
             }
         } catch (error) {
-            // Error handling removed
         }
-
-        // particles.js для заднего фона
         try {
             if(window.particlesJS && document.getElementById('particles-bg')) {
               particlesJS('particles-bg', {
                 particles: {
-                  number: { value: 40 }, // было 60
+                  number: { value: 40 },
                   color: { value: '#ffffff' },
                   shape: { type: 'circle' },
                   opacity: { value: 0.7 },
@@ -1318,20 +1320,16 @@
               });
             }
         } catch (error) {
-            // Error handling removed
         }
         
-        // Глобальный обработчик ошибок
         window.addEventListener('error', function(e) {
             ensureContentVisible();
         });
         
-        // Обработчик unhandledrejection
         window.addEventListener('unhandledrejection', function(e) {
             ensureContentVisible();
         });
         let login_sound_is_played = false;
-        // pywebview интеграция
         let userSettings = {};
         let isListening = false;
         let recognition;
@@ -1340,7 +1338,6 @@
         let voiceRecognitionLoop = null;
         let ttsEnabled = true;
         
-        // Защита от исчезновения контента
         function ensureContentVisible() {
             const mainLayout = document.querySelector('.main-layout');
             const chatArea = document.querySelector('.chat-area');
@@ -1363,24 +1360,20 @@
                 sidebar.style.transform = 'translateX(0)';
             }
             
-            // Принудительно показываем все секции сайдбара
             sidebarSections.forEach(section => {
                 section.style.opacity = '1';
                 section.style.transform = 'translateY(0)';
             });
             
-            // Принудительно показываем все сообщения
             messages.forEach(message => {
                 message.style.opacity = '1';
                 message.style.transform = 'translateY(0)';
             });
             
-            // Принудительно показываем все элементы
             document.body.style.visibility = 'visible';
             document.body.style.opacity = '1';
         }
         
-        // Загрузка настроек пользователя при старте
         document.addEventListener('DOMContentLoaded', function() {
             const userData = localStorage.getItem('jarvis_user');
             if (userData) {
@@ -1389,32 +1382,21 @@
                 applySettings(userSettings);
             }
             
-            // Автоматическое изменение высоты текстового поля
             const chatInput = document.getElementById('chatInput');
             chatInput.addEventListener('input', function() {
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 120) + 'px';
             });
             
-            // Загрузка настроек из backend
             loadSettings(); 
             contentLoaded = true;
             ensureContentVisible();
-            
-          
-            
-         
-            
-            // Дополнительная проверка через разные интервалы
             setTimeout(ensureContentVisible, 1000);
             setTimeout(ensureContentVisible, 2000);
             setTimeout(ensureContentVisible, 5000);
             setTimeout(ensureContentVisible, 10000);
-            
-            // Периодическая проверка каждые 30 секунд
             setInterval(ensureContentVisible, 30000);
 
-            // При загрузке страницы — если есть гифка в настройках, ставим её как фон чата
             if (userSettings && userSettings.gif_url) {
                 const chatArea = document.querySelector('.chat-area');
                 if (chatArea) {
@@ -1427,12 +1409,11 @@
                 }
                 if (particlesMain) particlesMain.style.display = 'none';
             } else {
-                // При загрузке страницы — показываем частицы по умолчанию
                 const particlesMain = document.getElementById('particles-main');
                 if (particlesMain) particlesMain.style.display = 'block';
             }
 
-            loadQuickCommands(); // Подгружаем быстрые команды сразу при запуске
+            loadQuickCommands();
             loadAppsSidebar();
         });
         
@@ -1440,12 +1421,19 @@
             try {
                 const alwaysListenToggle = document.getElementById('alwaysListenToggleSettings');
                 const soundToggle = document.getElementById('soundToggleSettings');
-                const autostartToggle = document.getElementById('autostartToggleSettings');
-                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
+                const autostartToggle = document.getElementById('autostartToggleSettings'); 
+                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings'); 
                 if (alwaysListenToggle) alwaysListenToggle.classList.toggle('active', !!settings.voice_enabled);
                 if (soundToggle) soundToggle.classList.toggle('active', !!settings.sound_enabled);
                 if (autostartToggle) autostartToggle.classList.toggle('active', !!settings.autostart_enabled);
                 if (triggerOnlyToggleSettings) triggerOnlyToggleSettings.classList.toggle('active', !!settings.voice_trigger_only);
+                
+                if (document.getElementById('chatInput')) {
+                    alwaysListenActive = !!settings.voice_enabled;
+                    if (alwaysListenActive) {
+                        startAlwaysListening();
+                    }
+                }
             } catch (error) { ensureContentVisible(); }
         }
         
@@ -1469,9 +1457,6 @@
                 if (settings.ai_model && aiModelSettings) aiModelSettings.value = settings.ai_model;
                 if (settings.voice_name && voiceNameSettings) voiceNameSettings.value = settings.voice_name;
                 applySettings(settings);
-                
-                // gif_url сохраняется в конфиге, но не загружается автоматически
-                // из-за ограничений безопасности браузера
             } catch (error) {
                 ensureContentVisible();
             }
@@ -1511,7 +1496,6 @@
                     
                     if (window.pywebview) {
                         try {
-                            // Просто отправляем в sendCommand, чтобы работал единый приоритет
                             const result = await window.pywebview.api.send_command(message);
                             addChatMessage(result, false);
                             speakText(result);
@@ -1523,6 +1507,71 @@
                     } catch (error) {
             ensureContentVisible();
         }
+        }
+        
+        async function stopSpeech() {
+            try {
+                const stopButton = document.getElementById('stopSpeechButton');
+                if (stopButton) {
+                    stopButton.style.background = '#FF3B30 !important';
+                    stopButton.style.color = '#fff !important';
+                }
+                
+                if (window.pywebview) {
+                    try {
+                        const result = await window.pywebview.api.stop_speech();
+                        console.log(result);
+                        setTimeout(() => {
+                            if (stopButton) {
+                                stopButton.style.background = '#fff !important';
+                                stopButton.style.color = '#111 !important';
+                            }
+                        }, 1000);
+                    } catch (error) {
+                        console.error('Ошибка остановки речи:', error);
+                        if (stopButton) {
+                            stopButton.style.background = '#fff !important';
+                            stopButton.style.color = '#111 !important';
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка в stopSpeech:', error);
+                ensureContentVisible();
+            }
+        }
+        
+        function clearChat() {
+            try {
+                const chatMessages = document.getElementById('chatMessages');
+                if (chatMessages) {
+                    chatMessages.innerHTML = `
+                        <div class="message assistant new">
+                            <div class="message-avatar">V</div>
+                            <div class="message-content">
+                                Привет! Я JARVIS MAX от Vibe Technology. Ваш персональный AI-ассистент готов помочь вам с любыми задачами. Чем могу быть полезен сегодня?
+                            </div>
+                        </div>
+                    `;
+
+                    const clearButton = document.getElementById('clearChatButton');
+                    if (clearButton) {
+                        const originalText = clearButton.innerHTML;
+                        clearButton.innerHTML = '✅';
+                        clearButton.style.background = '#34C759 !important';
+                        clearButton.style.color = '#fff !important';
+                        
+                        setTimeout(() => {
+                            clearButton.innerHTML = originalText;
+                            clearButton.style.background = '#fff !important';
+                            clearButton.style.color = '#111 !important';
+                        }, 1500);
+                    }
+                }
+            } catch (error) {
+                console.error('Ошибка в clearChat:', error);
+                ensureContentVisible();
+            }
         }
         
         function handleKeyDown(event) {
@@ -1542,13 +1591,17 @@
             userSettings.voice_enabled = alwaysListenActive;
             saveAllSettings();
             stopAlwaysListening();
-            if (alwaysListenActive) startAlwaysListening();
+            if (alwaysListenActive && document.getElementById('chatInput')) {
+                startAlwaysListening();
+            }
             playToggleSound();
         }
         
         function startAlwaysListening() {
             if (!('webkitSpeechRecognition' in window)) return;
             if (voiceRecognitionLoop) return;
+            if (!document.getElementById('chatInput')) return; 
+            
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             voiceRecognitionLoop = new SpeechRecognition();
             voiceRecognitionLoop.lang = 'ru-RU';
@@ -1557,7 +1610,6 @@
             voiceRecognitionLoop.onresult = function(event) {
                 const transcript = event.results[event.results.length-1][0].transcript.trim();
                 
-                // Добавляем сообщение пользователя в чат
                 addChatMessage(transcript, true);
                 showGeneratingIndicator();
                 
@@ -1577,7 +1629,6 @@
                         }
                     }
                 } else {
-                    // Без триггера: реагируем на любую команду
                     if (window.pywebview) {
                         window.pywebview.api.send_command(transcript).then(result => {
                             addChatMessage(result, false);
@@ -1599,7 +1650,6 @@
                 voiceRecognitionLoop.onend = null;
                 voiceRecognitionLoop.stop();
                 voiceRecognitionLoop = null;
-                
             }
         }
         
@@ -1669,14 +1719,12 @@
                 const voiceName = document.getElementById('voiceName');
                 const voiceNameSettings = document.getElementById('voiceNameSettings');
                 const speechSpeedSliderSettings = document.getElementById('speechSpeedSliderSettings');
-                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
-                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
+                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings'); 
                 if (aiModel) userSettings.ai_model = aiModel.value; 
                 if (voiceName) userSettings.voice_name = voiceName.value;
                 if (voiceNameSettings) userSettings.voice_name = voiceNameSettings.value;
                 if (speechSpeedSliderSettings) userSettings.speech_speed = parseFloat(speechSpeedSliderSettings.value);
-                if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value;
-                if (triggerOnlyToggleSettings) userSettings.voice_trigger_only = !!triggerOnlyToggleSettings.checked;
+                if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value; 
             } catch (error) {
                 console.error('Ошибка в updateSettings:', error);
                 ensureContentVisible();
@@ -1705,7 +1753,6 @@
                 if (window.pywebview) {
                     try {
                         await window.pywebview.api.save_settings(userSettings);
-                        // Показываем уведомление об успешном сохранении
                         const btn = document.querySelector('.save-settings-btn');
                         if (btn) {
                             const originalText = btn.textContent;
@@ -1735,7 +1782,6 @@
                 if (window.pywebview) {
                     try {
                         await window.pywebview.api.save_settings(userSettings);
-                        // Показываем уведомление об успешном сохранении
                         const btn = document.querySelector('.save-settings-btn');
                         if (btn) {
                             const originalText = btn.textContent;
@@ -1757,9 +1803,6 @@
             }
         }
         
-
-        
-        // Голосовое озвучивание ответа JARVIS
         function speakText(text) {
             try {
                 if (!('speechSynthesis' in window)) return;
@@ -1775,27 +1818,21 @@
                 utter.rate = speechSpeed;
                 utter.volume = volume;
 
-                // Функция выбора голоса и озвучивания
                 const setVoiceAndSpeak = () => {
                     const voices = window.speechSynthesis.getVoices();
                     let selectedVoice = null;
-                    // Сначала ищем по точному совпадению имени
                     if (voiceName) {
                         selectedVoice = voices.find(v => v.name === voiceName);
                     }
-                    // Если не найдено — ищем по языку
                     if (!selectedVoice && voiceName && voiceName.startsWith('ru')) {
                         selectedVoice = voices.find(v => v.lang === 'ru-RU');
                     }
-                    // Если всё равно не найдено — берём первый доступный
                     if (!selectedVoice && voices.length > 0) {
                         selectedVoice = voices[0];
                     }
                     if (selectedVoice) utter.voice = selectedVoice;
                     window.speechSynthesis.speak(utter);
                 };
-
-                // Иногда getVoices() возвращает пустой массив сразу после загрузки страницы
                 if (window.speechSynthesis.getVoices().length === 0) {
                     window.speechSynthesis.onvoiceschanged = setVoiceAndSpeak;
                 } else {
@@ -1806,7 +1843,6 @@
             }
         }
 
-        // --- Голосовой ввод ---
         const micButton = document.getElementById('micButton');
         
         let hasSpeechRecognition = false;
@@ -1840,11 +1876,9 @@
                 recognition.onresult = function(event) {
                     const transcript = event.results[0][0].transcript.trim();
                     
-                    // Добавляем сообщение пользователя в чат
                     addChatMessage(transcript, true);
                     showGeneratingIndicator();
                     
-                    // Ключевые слова для локальных команд
                     const localCommands = [
                         "запусти калькулятор",
                         "открой калькулятор",
@@ -1858,7 +1892,6 @@
                         "погода в"
                     ];
 
-                    // Проверяем, есть ли команда в списке
                     if (localCommands.some(cmd => transcript.toLowerCase().includes(cmd))) {
                         if (window.pywebview) {
                             window.pywebview.api.send_command(transcript).then(result => {
@@ -1870,7 +1903,6 @@
                             });
                         }
                     } else {
-                        // Отправляем в чат как обычное сообщение
                         if (window.pywebview) {
                             window.pywebview.api.send_command(transcript).then(result => {
                                 addChatMessage(result, false);
@@ -1906,7 +1938,6 @@
                             document.getElementById('chatInput').value = transcript;
                             sendChatMessage();
                         } else {
-                            // Можно показать ошибку или проигнорировать
                         }
                     } catch (err) {
                         micButton.classList.remove('active');
@@ -1929,7 +1960,6 @@
                     settingsSidebar.classList.add('open');
                     loadMicrophonesSettings();
                     loadSettingsSidebar();
-                    // loadReminders(); // Удалено, такой функции нет
                 }
             } catch (error) {
                 console.error('Ошибка открытия настроек:', error);
@@ -1944,8 +1974,6 @@
                     const settings = await window.pywebview.api.get_settings();
                     userSettings = settings;
                     applySettingsToUISidebar(settings);
-                    
-                    // Загружаем доступные голоса
                     try {
                         const voices = await window.pywebview.api.get_available_voices();
                         populateVoiceSelect(voices);
@@ -1961,7 +1989,6 @@
         
         function applySettingsToUISidebar(settings) {
             try {
-                // Применяем настройки к элементам сайдбара
                 const aiModelSettings = document.getElementById('aiModelSettings');
                 const voiceNameSettings = document.getElementById('voiceNameSettings');
                 const speechSpeedSliderSettings = document.getElementById('speechSpeedSliderSettings');
@@ -1971,6 +1998,7 @@
                 const autostartToggleSettings = document.getElementById('autostartToggleSettings');
                 const speakCodeToggleSettings = document.getElementById('speakCodeToggleSettings');
                 const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
+                const triggerOnlyToggleSettings = document.getElementById('triggerOnlyToggleSettings');
                 
                 if (settings.ai_model && aiModelSettings) aiModelSettings.value = settings.ai_model;
                 if (settings.voice_name && voiceNameSettings) voiceNameSettings.value = settings.voice_name;
@@ -1979,8 +2007,7 @@
                     if (speechSpeedValueSettings) speechSpeedValueSettings.textContent = settings.speech_speed + 'x';
                 }
                 if (settings.daily_reminder_text && dailyReminderTextSettings) dailyReminderTextSettings.value = settings.daily_reminder_text;
-                
-                // Применяем состояния переключателей
+                 
                 if (alwaysListenToggleSettings) {
                     if (settings.voice_enabled) {
                         alwaysListenToggleSettings.classList.add('active');
@@ -1988,7 +2015,13 @@
                         alwaysListenToggleSettings.classList.remove('active');
                     }
                 }
-                
+                if(triggerOnlyToggleSettings){
+                    if(settings.trigger_only){
+                        triggerOnlyToggleSettings.classList.add('active');
+                    }else{
+                        triggerOnlyToggleSettings.classList.remove('active');
+                    }
+                }
                 if (soundToggleSettings) {
                     if (settings.sound_enabled) {
                         soundToggleSettings.classList.add('active');
@@ -2091,7 +2124,6 @@
         }
         function updateMicrophoneSettings() {
             try {
-                // Можно реализовать сохранение выбранного микрофона через pywebview.api.save_settings
             } catch (error) {
                 console.error('Ошибка в updateMicrophoneSettings:', error);
                 ensureContentVisible();
@@ -2103,28 +2135,83 @@
                 const input = document.getElementById('bgGifInput');
                 if (!input) return;
                 if (!input.files || input.files.length === 0) {
-                    alert('Пожалуйста, выберите GIF файл');
+                    alert('Пожалуйста, выберите файл');
                     return;
                 }
                 const file = input.files[0];
-                if (!file.type.includes('gif')) {
-                    alert('Пожалуйста, выберите GIF файл');
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Файл слишком большой! Выберите файл до 5 МБ.');
                     return;
                 }
                 const fileUrl = URL.createObjectURL(file);
                 const globalBg = document.getElementById('global-bg');
-                if (globalBg) {
-                    globalBg.style.background = `url('${fileUrl}') center center / cover no-repeat`;
-                    globalBg.style.backgroundImage = `url('${fileUrl}')`;
-                    globalBg.style.backgroundSize = 'cover';
-                    globalBg.style.backgroundPosition = 'center';
-                    globalBg.style.backgroundRepeat = 'no-repeat';
+                let bgVideo = document.getElementById('bgVideo');
+                if (file.type.includes('webm')) {
+                    if (!bgVideo) {
+                        bgVideo = document.createElement('video');
+                        bgVideo.id = 'bgVideo';
+                        bgVideo.autoplay = true;
+                        bgVideo.loop = true;
+                        bgVideo.muted = true;
+                        bgVideo.playsInline = true;
+                        bgVideo.style.position = 'absolute';
+                        bgVideo.style.top = '0';
+                        bgVideo.style.left = '0';
+                        bgVideo.style.width = '100vw';
+                        bgVideo.style.height = '100vh';
+                        bgVideo.style.objectFit = 'cover';
+                        bgVideo.style.zIndex = '0';
+                        globalBg.appendChild(bgVideo);
+                    }
+                    bgVideo.src = fileUrl;
+                    bgVideo.style.display = 'block';
+                    bgVideo.onerror = function(e) {
+                        alert('Ошибка загрузки видео-фона! Возможно, формат не поддерживается этим браузером.');
+                    };
+                    setTimeout(() => {
+                        bgVideo.play().catch(e => {
+                            alert('Видео не может быть запущено автоматически: ' + e);
+                        });
+                    }, 100);
+                    if (globalBg) {
+                        globalBg.style.background = '';
+                        globalBg.style.backgroundImage = '';
+                    }
+                    const particlesMain = document.getElementById('particles-main');
+                    if (particlesMain) particlesMain.style.display = 'none';
+                    alert('WebM видео установлено как фон приложения!');
+                    return;
+                } else if (file.type.includes('webp')) {
+                    if (globalBg) {
+                        globalBg.style.background = `url('${fileUrl}') center center / cover no-repeat`;
+                        globalBg.style.backgroundImage = `url('${fileUrl}')`;
+                        globalBg.style.backgroundSize = 'cover';
+                        globalBg.style.backgroundPosition = 'center';
+                        globalBg.style.backgroundRepeat = 'no-repeat';
+                    }
+                    if (bgVideo) bgVideo.style.display = 'none';
+                    const particlesMain = document.getElementById('particles-main');
+                    if (particlesMain) particlesMain.style.display = 'none';
+                    alert('WebP изображение установлено как фон приложения!');
+                    return;
+                } else if (file.type.includes('gif')) {
+                    if (globalBg) {
+                        globalBg.style.background = `url('${fileUrl}') center center / cover no-repeat`;
+                        globalBg.style.backgroundImage = `url('${fileUrl}')`;
+                        globalBg.style.backgroundSize = 'cover';
+                        globalBg.style.backgroundPosition = 'center';
+                        globalBg.style.backgroundRepeat = 'no-repeat';
+                    }
+                    if (bgVideo) bgVideo.style.display = 'none';
+                    const particlesMain = document.getElementById('particles-main');
+                    if (particlesMain) particlesMain.style.display = 'none';
+                    alert('Гифка установлена как фон приложения!');
+                    return;
+                } else {
+                    alert('Пожалуйста, выберите файл формата WebM, WebP или GIF.');
                 }
-                const particlesMain = document.getElementById('particles-main');
-                if (particlesMain) particlesMain.style.display = 'none';
-                alert('Гифка установлена как фон приложения!');
             } catch (error) {
-                alert('Ошибка установки гифки: ' + error.message);
+                alert('Ошибка установки фона: ' + error.message);
                 ensureContentVisible();
             }
         }
@@ -2138,13 +2225,7 @@
             const particlesMain = document.getElementById('particles-main');
             if (particlesMain) particlesMain.style.display = 'block';
         }
-
-        // Логика для загрузки/сохранения всех параметров, анимаций, быстрых команд, приложений и т.д.
-
-        // (Реализую JS-функции: openSettingsSidebar, closeSettingsSidebar, loadMicrophonesSettings, testMicrophoneSettings, updateVolumeSettings, updateMicrophoneSettings, toggleAlwaysListenSettings, toggleSoundSettings, toggleAutostartSettings, updateSpeechSpeedSettings, addQuickCommand, addApp, toggleDailyRemindersSettings, saveAllSettingsSidebar и т.д.)
-
-        // Периодически обновлять системную статистику через pywebview.api.get_system_stats
-        
+ 
         function copyToClipboard(btn) {
             try {
                 const text = btn.parentElement.querySelector('.assistant-text').textContent;
@@ -2221,7 +2302,6 @@
             }
         }
 
-        // Сбросить гифку
         function resetBackgroundGif() {
             const globalBg = document.getElementById('global-bg');
             if (globalBg) {
@@ -2232,19 +2312,16 @@
             if (particlesMain) particlesMain.style.display = 'block';
         }
 
-        // Добавить CSS для плавной смены фона
         const style = document.createElement('style');
         style.innerHTML = `body { transition: background 0.7s cubic-bezier(0.4,0,0.2,1); }`;
         document.head.appendChild(style);
 
-        // Скрывать system-stats при открытии шторки
         function toggleSystemStatsSidebar(open) {
             const stats = document.getElementById('system-stats');
             if (!stats) return;
             if (open) stats.style.display = 'none';
             else stats.style.display = '';
         }
-        // Модифицируем openSettingsSidebar и closeSettingsSidebar
         const origOpenSettingsSidebar = window.openSettingsSidebar;
         window.openSettingsSidebar = function() {
             origOpenSettingsSidebar();
@@ -2256,7 +2333,6 @@
             toggleSystemStatsSidebar(false);
         };
 
-        // --- Добавить недостающие функции для сайдбара настроек ---
         function updateSpeechSpeedSettings(val) {
             try {
                 const speechSpeedValueSettings = document.getElementById('speechSpeedValueSettings');
@@ -2276,7 +2352,6 @@
                 console.error('Ошибка в toggleDailyRemindersSettings:', error);
             }
         }
-        // --- Быстрые команды ---
         function renderQuickCommands() {
             const list = document.getElementById('quickCommandsList');
             list.innerHTML = '';
@@ -2332,7 +2407,6 @@
                 });
             }
         }
-        // --- Приложения ---
         function renderApps() {
             const list = document.getElementById('appsList');
             list.innerHTML = '';
@@ -2388,7 +2462,6 @@
                 });
             }
         }
-        // При открытии сайдбара загружать команды и приложения
         const origOpenSettingsSidebarQC = window.openSettingsSidebar;
         window.openSettingsSidebar = function() {
             origOpenSettingsSidebarQC();
@@ -2396,7 +2469,6 @@
             loadAppsSidebar();
         };
 
-        // Добавляю дефолтные приложения
         const DEFAULT_APPS = [
           {name: 'Командная строка', path: 'cmd.exe'},
           {name: 'Блокнот', path: 'notepad.exe'},
@@ -2406,12 +2478,10 @@
         ];
         function getAllApps() {
           const userApps = userSettings.user_apps || [];
-          // Не дублируем дефолтные, если пользователь их уже добавил
           const userAppNames = userApps.map(a => a.name.toLowerCase());
           return [...DEFAULT_APPS.filter(a => !userAppNames.includes(a.name.toLowerCase())), ...userApps];
         }
 
-        // Озвучка ответов нейросети
         function toggleTTSSettings() {
           const toggle = document.getElementById('ttsToggleSettings');
           ttsEnabled = toggle.classList.toggle('active');
@@ -2420,12 +2490,10 @@
         }
         function speakText(text) {
           if (!ttsEnabled) return;
-          // ... остальной код озвучки ...
         }
 
         function safeAddChatMessage(message, isUser = false) {
             try {
-                // Декодируем экранированные символы
                 let decodedMessage = message;
                 if (typeof message === 'string') {
                     decodedMessage = message
@@ -2440,7 +2508,6 @@
                 addChatMessage(decodedMessage, isUser);
             } catch (error) {
                 console.error('Ошибка в safeAddChatMessage:', error);
-                // Fallback - добавляем как есть
                 addChatMessage(message, isUser);
             }
         }
@@ -2470,7 +2537,6 @@
                 sidebarList.appendChild(btn);
             });
         }
-        // После загрузки и изменения команд:
         function loadQuickCommands() {
             if (window.pywebview && window.pywebview.api && window.pywebview.api.get_settings) {
                 window.pywebview.api.get_settings().then(settings => {
@@ -2487,53 +2553,111 @@
             renderQuickCommands();
             renderSidebarQuickCommands();
         }
-        // Голосовой ввод с триггером 'Джарвис':
         function startAlwaysListening() {
             if (!('webkitSpeechRecognition' in window)) return;
             if (voiceRecognitionLoop) return;
+            if (!document.getElementById('chatInput')) return;
+            
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             voiceRecognitionLoop = new SpeechRecognition();
+            
             voiceRecognitionLoop.lang = 'ru-RU';
             voiceRecognitionLoop.continuous = true;
-            voiceRecognitionLoop.interimResults = false;
+            voiceRecognitionLoop.interimResults = true;
+            voiceRecognitionLoop.maxAlternatives = 1;
+            voiceRecognitionLoop.grammars = null;
+            
+            let finalTranscript = '';
+            let isProcessing = false;
+            
+            voiceRecognitionLoop.onstart = function() {
+                console.log('Автопрослушивание запущено');
+            };
+            
             voiceRecognitionLoop.onresult = function(event) {
-                const transcript = event.results[event.results.length-1][0].transcript.trim();
+                let interimTranscript = '';
                 
-                // Добавляем сообщение пользователя в чат
-                addChatMessage(transcript, true);
-                showGeneratingIndicator();
-                
-                if (userSettings.voice_trigger_only) {
-                    if (transcript.toLowerCase().startsWith('джарвис')) {
-                        const query = transcript.replace(/^джарвис[ ,]*/i, '');
-                        if (query) {
-                            if (window.pywebview) {
-                                window.pywebview.api.send_command(query).then(result => {
-                                    addChatMessage(result, false);
-                                    speakText(result);
-                                }).catch(error => {
-                                    console.error('Ошибка выполнения команды:', error);
-                                    addChatMessage('Ошибка выполнения команды', false);
-                                });
-                            }
-                        }
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
                     }
-                } else {
-                    // Без триггера: реагируем на любую команду
-                    if (window.pywebview) {
-                        window.pywebview.api.send_command(transcript).then(result => {
-                            addChatMessage(result, false);
-                            speakText(result);
+                }
+                
+                if (finalTranscript.trim() && !isProcessing) {
+                    isProcessing = true;
+                    const transcript = finalTranscript.trim();
+                    
+                    addChatMessage(transcript, true);
+                    showGeneratingIndicator();
+                    
+                    finalTranscript = '';
+                    
+                    if (userSettings.voice_trigger_only) {
+                        if (transcript.toLowerCase().startsWith('джарвис')) {
+                            const query = transcript.replace(/^джарвис[ ,]*/i, '');
+                            if (query) {
+                                if (window.pywebview) {
+                                    window.pywebview.api.send_command(query).then(result => {
+                                        addChatMessage(result, false);
+                                        speakText(result);
+                                        isProcessing = false;
+                                    }).catch(error => {
+                                        console.error('Ошибка выполнения команды:', error);
+                                        addChatMessage('Ошибка выполнения команды', false);
+                                        isProcessing = false;
+                                    });
+                                }
+                            } else {
+                                isProcessing = false;
+                            }
+                        } else {
+                            isProcessing = false;
+                        }
+                    } else {
+                        if (window.pywebview) {
+                            window.pywebview.api.send_command(transcript).then(result => {
+                                addChatMessage(result, false);
+                                                            speakText(result);
+                            isProcessing = false;
                         }).catch(error => {
                             console.error('Ошибка выполнения команды:', error);
                             addChatMessage('Ошибка выполнения команды', false);
+                            isProcessing = false;
                         });
+                        }
                     }
                 }
             };
-            voiceRecognitionLoop.onend = function() {
-                if (alwaysListenActive) voiceRecognitionLoop.start();
+            
+            voiceRecognitionLoop.onerror = function(event) {
+                console.error('Ошибка распознавания речи:', event.error);
+                isProcessing = false;
+                
+                if (alwaysListenActive) {
+                    setTimeout(() => {
+                        if (voiceRecognitionLoop) {
+                            voiceRecognitionLoop.start();
+                        }
+                    }, 200);
+                }
             };
+            
+            voiceRecognitionLoop.onend = function() {
+                console.log('Автопрослушивание остановлено');
+                isProcessing = false;
+                
+                if (alwaysListenActive) {
+                    setTimeout(() => {
+                        if (voiceRecognitionLoop) {
+                            voiceRecognitionLoop.start();
+                        }
+                    }, 100);
+                }
+            };
+            
             voiceRecognitionLoop.start();
         }
         function toggleTriggerOnlySetting() {
@@ -2555,11 +2679,7 @@
         function populateVoiceSelect(voices) {
             const voiceSelect = document.getElementById('voiceNameSettings');
             if (!voiceSelect) return;
-            
-            // Очищаем текущие опции
             voiceSelect.innerHTML = '';
-            
-            // Добавляем новые опции
             voices.forEach(voice => {
                 const option = document.createElement('option');
                 option.value = voice.name;
@@ -2567,39 +2687,33 @@
                 voiceSelect.appendChild(option);
             });
             
-            // Устанавливаем текущий выбранный голос
             if (userSettings && userSettings.voice_name) {
                 voiceSelect.value = userSettings.voice_name;
             }
         }
 
         function formatAIResponse(text) {
-            if (!text) return '';
-             
-            let formatted = text
-                .replace(/\n\n/g, '</p><p>')  // Двойные переносы = новые параграфы
-                .replace(/\n/g, '<br>')       // Одинарные переносы = <br>
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // **текст** -> жирный
-                .replace(/\*(.*?)\*/g, '<em>$1</em>')              // *текст* -> курсив
-                .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')  // Блоки кода
-                .replace(/^# (.*$)/gm, '<h3>$1</h3>')              // # Заголовок
-                .replace(/^## (.*$)/gm, '<h4>$1</h4>')             // ## Подзаголовок
-                .replace(/^### (.*$)/gm, '<h5>$1</h5>')            // ### Подподзаголовок
-                .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')          // Нумерованные списки
-                .replace(/^- (.*$)/gm, '<li>$1</li>');             // Маркированные списки
+            if (!text) return ''; 
+            let formatted = text.replace(/```/g, '#')
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
+                .replace(/^# (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gm, '<h4>$1</h4>')
+                .replace(/^### (.*$)/gm, '<h5>$1</h5>')
+                .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+                .replace(/^- (.*$)/gm, '<li>$1</li>');
             
-            // Оборачиваем в параграф если нет HTML тегов
             if (!formatted.includes('<') || formatted.includes('<br>')) {
                 formatted = '<p>' + formatted + '</p>';
             }
-            
-            // Обрабатываем списки
             if (formatted.includes('<li>')) {
                 formatted = formatted.replace(/(<li>.*?<\/li>)+/g, function(match) {
                     return '<ul>' + match + '</ul>';
                 });
             }
-            
             return formatted;
         }
         
@@ -2643,7 +2757,6 @@
         
         function addChatMessage(message, isUser = false) {
             try {
-                // Скрываем индикатор generating если он есть
                 hideGeneratingIndicator();
                 const chatMessages = document.getElementById('chatMessages');
                 if (!chatMessages) {
@@ -2660,9 +2773,7 @@
                 if (isUser) {
                     content.textContent = message;
                 } else {
-                    // Форматируем ответ AI
                     content.innerHTML = `<div class=\"message-text\"></div>`;
-                    // Добавляем кнопку копирования
                     const copyBtn = document.createElement('button');
                     copyBtn.className = 'copy-btn';
                     copyBtn.innerHTML = '📋';
@@ -2698,22 +2809,18 @@
         
         function copyToClipboard(text) {
             try {
-                // Удаляем HTML теги для чистого копирования
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = text;
                 const cleanText = tempDiv.textContent || tempDiv.innerText || '';
                 
-                // Пробуем современный API
                 if (navigator.clipboard && window.isSecureContext) {
                     navigator.clipboard.writeText(cleanText).then(() => {
                         showNotification('Скопировано в буфер обмена!');
                     }).catch(err => {
                         console.error('Ошибка копирования:', err);
-                        // Fallback для старых браузеров
                         fallbackCopyTextToClipboard(cleanText);
                     });
                 } else {
-                    // Fallback для небезопасного контекста
                     fallbackCopyTextToClipboard(cleanText);
                 }
             } catch (error) {
