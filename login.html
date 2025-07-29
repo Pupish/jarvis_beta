@@ -120,17 +120,14 @@
         .vibe-icon {
             width: 80px;
             height: 80px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            font-weight: bold;
-            color: white;
             margin-bottom: 20px;
             box-shadow: var(--shadow-medium);
             animation: logoGlow 2s ease-in-out infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
         }
 
         @keyframes logoGlow {
@@ -418,7 +415,9 @@
     <div class="login-container">
         <div class="login-card">
             <div class="vibe-logo">
-                <div class="vibe-icon">V</div>
+                <div class="vibe-icon">
+                    <img src="./logo.png" alt="Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px; display: block;" onerror="this.style.display='none'; this.parentElement.innerHTML='V'; this.parentElement.style.background='linear-gradient(135deg, var(--primary-color), var(--secondary-color))'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center'; this.parentElement.style.fontSize='36px'; this.parentElement.style.fontWeight='bold'; this.parentElement.style.color='white';">
+                </div>
                 <div class="app-title">JARVIS MAX</div>
                 <div class="app-subtitle"></div>
                 <div class="app-subtitle"></div>
