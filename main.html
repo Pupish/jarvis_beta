@@ -1175,6 +1175,7 @@
                         </div>
                     </div>
                     <div class="control-item">
+                        <meta charset="UTF-8">
                         <div class="control-label">Микрофон</div>
                         <select class="settings-select" id="microphoneSelectSettings" onchange="updateMicrophoneSettings()"></select>
                         <button class="quick-command" onclick="testMicrophoneSettings()">Тест</button>
@@ -1237,10 +1238,7 @@
                         <div class="settings-label">Город</div>
                         <input class="settings-input" id="weatherCitySettings" type="text" placeholder="Ваш город" />
                     </div>
-                    <div class="settings-item">
-                        <div class="settings-label">API ключ OpenWeather</div>
-                        <input class="settings-input" id="weatherApiKeySettings" type="text" placeholder="API ключ OpenWeather" />
-                    </div>
+                    
                 </div>
                 <div class="settings-section animated fadeInUp">
                     <div class="section-title">Быстрые команды</div>
@@ -1432,9 +1430,11 @@
             try {
                 const aiModelSettings = document.getElementById('aiModelSettings');
                 const voiceNameSettings = document.getElementById('voiceNameSettings');
+                const weatherCitySettings = document.getElementById('weatherCitySettings');
                 
                 if (settings.ai_model && aiModelSettings) aiModelSettings.value = settings.ai_model;
                 if (settings.voice_name && voiceNameSettings) voiceNameSettings.value = settings.voice_name;
+                if (settings.weather_city && weatherCitySettings) weatherCitySettings.value = settings.weather_city;
                 applySettings(settings);
             } catch (error) {
                 ensureContentVisible();
@@ -1725,14 +1725,17 @@
                 const voiceNameSettings = document.getElementById('voiceNameSettings');
                 const speechSpeedSliderSettings = document.getElementById('speechSpeedSliderSettings');
                 const volumeSliderSettings = document.getElementById('volumeSliderSettings');
-                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings'); 
+                const dailyReminderTextSettings = document.getElementById('dailyReminderTextSettings');
+                const weatherCitySettings = document.getElementById('weatherCitySettings');
+                
                 if (aiModel) userSettings.ai_model = aiModel.value; 
                 if (voiceName) userSettings.voice_name = voiceName.value;
                 if (voiceNameSettings) userSettings.voice_name = voiceNameSettings.value;
                 if (speechSpeedSliderSettings) userSettings.speech_speed = parseFloat(speechSpeedSliderSettings.value);
                 if (volumeSliderSettings) userSettings.voice_volume = parseInt(volumeSliderSettings.value);
-                
-                if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value; 
+                if (dailyReminderTextSettings) userSettings.daily_reminder_text = dailyReminderTextSettings.value;
+                 
+                if (weatherCitySettings) userSettings.weather_city = weatherCitySettings.value;
             } catch (error) {
                 console.error('Ошибка в updateSettings:', error);
                 ensureContentVisible();

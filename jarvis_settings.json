@@ -6,12 +6,15 @@
   "current_user": null,
   "ai_model": "openai/gpt-3.5-turbo",
   "voice_name": "ru-RU-SvetlanaNeural",
-  "weather_city": "Москва",
+  "weather_city": "",
   "weather_api_key": "",
   "tts_enabled": true,
   "speech_speed": 1,
   "user_apps": [],
   "voice_trigger_only": false,
   "speak_code": false,
-  "voice_volume": 50
+  "voice_volume": 50,
+  "saved_login": "123",
+  "saved_token": "4ubl9k7c7kr0y2yk509xobo70a6ek94f",
+  "last_login_time": 1753826183.4298186
 }
