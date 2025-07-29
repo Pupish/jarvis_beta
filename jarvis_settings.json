@@ -11,6 +11,10 @@
   "tts_enabled": true,
   "speech_speed": 1,
   "user_apps": [],
-  "voice_trigger_only": true,
-  "speak_code": false
+  "voice_trigger_only": false,
+  "speak_code": false,
+  "voice_volume": 44,
+  "saved_login": "123",
+  "saved_token": "4ubl9k7c7kr0y2yk509xobo70a6ek94f",
+  "last_login_time": 1753812743.8534155
 }

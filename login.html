@@ -350,6 +350,28 @@
             transform: translateY(20px);
             animation: slideInUp 0.6s ease-out 2.2s forwards;
         }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
  
         @media (max-width: 480px) {
             .login-card {
@@ -509,7 +531,38 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', loadSavedLogin);
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSavedLogin();
+            
+            const tokenInput = document.getElementById('token');
+            tokenInput.addEventListener('contextmenu', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    if (window.pywebview && window.pywebview.api) {
+                        const clipboardContent = await window.pywebview.api.get_clipboard_content();
+                        if (clipboardContent && clipboardContent !== "Ошибка получения буфера обмена") {
+                            this.value = clipboardContent;
+                            this.focus();
+                            
+                            showNotification('Текст вставлен из буфера обмена');
+                        } else {
+                            showNotification('Буфер обмена пуст или недоступен');
+                        }
+                    } else {
+                        if (navigator.clipboard) {
+                            const text = await navigator.clipboard.readText();
+                            this.value = text;
+                            this.focus();
+                            showNotification('Текст вставлен из буфера обмена');
+                        }
+                    }
+                } catch (error) {
+                    console.error('Ошибка вставки из буфера обмена:', error);
+                    showNotification('Ошибка вставки из буфера обмена');
+                }
+            });
+        });
         
         if (window.pywebview) {
             window.pywebview.onload = function() {
@@ -684,6 +737,36 @@
                     clearBtn.disabled = false;
                 }, 2000);
             }
+        }
+        
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 12px 20px;
+                border-radius: 5px;
+                z-index: 10000;
+                font-size: 14px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2000);
         }
     </script>
 </body>
