@@ -1175,7 +1175,6 @@
                         </div>
                     </div>
                     <div class="control-item">
-                        <meta charset="UTF-8">
                         <div class="control-label">Микрофон</div>
                         <select class="settings-select" id="microphoneSelectSettings" onchange="updateMicrophoneSettings()"></select>
                         <button class="quick-command" onclick="testMicrophoneSettings()">Тест</button>
@@ -1238,7 +1237,11 @@
                         <div class="settings-label">Город</div>
                         <input class="settings-input" id="weatherCitySettings" type="text" placeholder="Ваш город" />
                     </div>
-                    
+                    <div class="settings-item">
+                        <div class="settings-label" style="color: var(--text-secondary); font-size: 0.9rem;">
+                            🌤️ Используется бесплатный API Open-Meteo (не требует ключа)
+                        </div>
+                    </div>
                 </div>
                 <div class="settings-section animated fadeInUp">
                     <div class="section-title">Быстрые команды</div>
@@ -1448,7 +1451,7 @@
                 
                 if (window.pywebview) {
                     try {
-                        const result = await window.pywebview.api.send_command(command);
+                        const result = await window.pywebview.api.send_command(command);  
                         addChatMessage(result, false);
                         speakText(result);
                         
@@ -1523,7 +1526,6 @@
                 if (window.pywebview) {
                     try {
                         const result = await window.pywebview.api.stop_speech();
-                        console.log(result);
                         setTimeout(() => {
                             if (stopButton) {
                                 stopButton.style.background = '#fff !important';
@@ -1816,8 +1818,7 @@
         
         function speakText(text) {
             try {
-                if (!('speechSynthesis' in window)) return;
- 
+                if (!('speechSynthesis' in window)) return; 
                 const voiceName = (userSettings && userSettings.voice_name) ? userSettings.voice_name : 'ru-RU-SvetlanaNeural';
                 const speechSpeed = (userSettings && userSettings.speech_speed) ? userSettings.speech_speed : 1.0; 
                 let volume = 0.8;
@@ -2630,7 +2631,6 @@
             let isProcessing = false;
             
             voiceRecognitionLoop.onstart = function() {
-                console.log('Автопрослушивание запущено');
             };
             
             voiceRecognitionLoop.onresult = function(event) {
@@ -2705,7 +2705,6 @@
             };
             
             voiceRecognitionLoop.onend = function() {
-                console.log('Автопрослушивание остановлено');
                 isProcessing = false;
                 
                 if (alwaysListenActive) {
