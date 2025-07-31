@@ -466,13 +466,10 @@
     </div>
 
     <script> 
-        function loadSavedLogin() {
-            console.log('Проверка готовности pywebview...');
-            if (window.pywebview && window.pywebview.api) {
-                console.log('pywebview готов, загружаем данные...');
+        function loadSavedLogin() { 
+            if (window.pywebview && window.pywebview.api) { 
                 loadSavedLoginData();
-            } else {
-                console.log('pywebview не готов, ждем...');
+            } else { 
                 setTimeout(loadSavedLogin, 100);
             }
         }
@@ -483,10 +480,8 @@
                     console.error('pywebview не инициализирован');
                     return;
                 }
-                
-                console.log('Запрашиваем сохраненные данные...');
-                const savedData = await window.pywebview.api.get_saved_login();
-                console.log('Сохраненные данные:', savedData);
+                 
+                const savedData = await window.pywebview.api.get_saved_login(); 
                 
                 if (savedData.has_saved) { 
                     document.getElementById('username').value = savedData.login;
@@ -498,8 +493,7 @@
                     
                     setTimeout(async () => {
                         try {
-                            const result = await window.pywebview.api.login(savedData.login, '', savedData.token);
-                            console.log('Результат автоматического входа:', result);
+                            const result = await window.pywebview.api.main_login(savedData.login, '', savedData.token); 
                             
                             if (result.success) {
                                 loginBtn.textContent = '✅ Успешно!';
@@ -509,11 +503,7 @@
                                     login: savedData.login,
                                     settings: {}
                                 };
-                                localStorage.setItem('jarvis_user', JSON.stringify(userData));
-                                
-                                setTimeout(() => {
-                                    window.pywebview.api.load_main_window();
-                                }, 1500);
+                                localStorage.setItem('jarvis_user', JSON.stringify(userData)); 
                             } else {
                                 loginBtn.textContent = '🔐 Войти в систему';
                                 loginBtn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--secondary-color))';
@@ -644,9 +634,7 @@
             
             try {
                 if (window.pywebview) {
-                    const result = await window.pywebview.api.login(login, password, token);
-                    console.log('Ответ от сервера:', result);
-                    
+                    const result = await window.pywebview.api.main_login(login, password, token);  
                     if (result.success) { 
                         loginBtn.textContent = '✅ Успешно!';
                         loginBtn.style.background = 'linear-gradient(135deg, var(--success-color), #30D158)';
@@ -659,13 +647,8 @@
                          
                         try {
                             await window.pywebview.api.expand_window();
-                        } catch (error) {
-                            console.log('Окно уже увеличено');
+                        } catch (error) { 
                         }
-                         
-                        setTimeout(() => {
-                            window.pywebview.api.load_main_window();
-                        }, 1500);
                     } else { 
                         loginBtn.textContent = '❌ Ошибка входа: ' + result.message;
                         loginBtn.style.background = 'linear-gradient(135deg, var(--error-color), #FF453A)';

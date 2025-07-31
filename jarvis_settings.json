@@ -1,17 +1,12 @@
 {
-  "quick_commands": [
-    {
-      "name": "Блум",
-      "action": "https://blume.pw"
-    }
-  ],
+  "quick_commands": [],
   "voice_enabled": false,
   "sound_enabled": true,
   "autostart_enabled": true,
   "current_user": null,
   "ai_model": "openai/gpt-3.5-turbo",
   "voice_name": "ru-RU-SvetlanaNeural",
-  "weather_city": "Москва",
+  "weather_city": "",
   "weather_api_key": "",
   "tts_enabled": true,
   "speech_speed": 1,
